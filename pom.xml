@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.longfor.longjian</groupId>
-    <artifactId>longjian.common</artifactId>
+    <artifactId>longjian-common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
