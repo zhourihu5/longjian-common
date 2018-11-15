@@ -1,3 +1,10 @@
 *.idea
 *.iml
-target/*
+*.class
+
+*/target/
+/log
+/logs
+/target
+/.mvn
+/.idea
