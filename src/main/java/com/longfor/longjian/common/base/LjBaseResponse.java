@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class LjBaseResponse<T> implements Serializable {
     private int result;
     private T data;
-    private long timestamp = System.currentTimeMillis();
+    private long timestamp = System.currentTimeMillis()/1000; // 符合原来的接口中的10位秒级时间戳
 
     public LjBaseResponse(int result, T data) {
         this.result=result;
