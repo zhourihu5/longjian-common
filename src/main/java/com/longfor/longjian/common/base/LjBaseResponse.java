@@ -8,6 +8,8 @@ import java.io.Serializable;
 /**
  * lipeishuai on 2018/11/14.
  *
+ * @author lipeishuai
+ * @date 2018/11/14 13:09
  * @param <T>
  */
 @Data
