@@ -15,6 +15,7 @@ import java.io.Serializable;
 public class LjBaseResponse<T> implements Serializable {
     private int result;
     private T data;
+    private long timestamp = System.currentTimeMillis();
 
     public LjBaseResponse(int result, T data) {
         this.result=result;
