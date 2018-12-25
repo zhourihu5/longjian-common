@@ -18,8 +18,9 @@ import java.util.Map;
 @Component
 public class KafkaProducer {
 
-    @Value("kafka.kafka_prefix")
+    @Value("${kafka.kafka_prefix}")
     private String prefix;
+
     @Autowired
     private KafkaTemplate kafkaTemplate;
 
