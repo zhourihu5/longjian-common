@@ -80,28 +80,28 @@ public class UmPushUtil {
         return flag;
     }
 
-    public static  void main(String args[]){
-
-        String AndroidAppkey="5b504eb6a40fa35084000068";
-        String AndroidAppMasterSecret="agygyb9svtewqdgpj4vrnx7tiv7mc2wz";
-        String alias="user_id_longhu_17787";
-        String alias_type="user_id";
-        String AndroidTicker="Android 啥阿萨 ";
-        String AndroidTitle="项目填报提醒";
-        String AndroidText="项目[杭州龙湖大江东B项目一期1组团] 今日状态填报提醒";
-        String AndroidCustom="Android_message";
-        String AndroidMessageId="358540";
-       boolean Android_result= sendAndroidCustomizedcast(AndroidAppkey,AndroidAppMasterSecret,alias,alias_type,AndroidTicker,AndroidTitle,AndroidText,AndroidCustom,AndroidMessageId);
-
-        String IOSAppkey="5b559ccb8f4a9d7a4800000f";
-        String IOSAppMasterSecret="zzl7yp8youbkvto9os8ucs1x2fu6rdw2";
-        String IOSAlert="项目[杭州龙湖大江东B项目一期1组团] 今日状态填报提醒";
-        String IOSMessageId="358540";
-//       boolean IOS_result= sendIOSCustomizedcast(IOSAppkey,IOSAppMasterSecret,alias,alias_type,IOSAlert,IOSMessageId, 0);
-
-
-       // logger.debug("Android_result==="+Android_result);
-        //logger.debug("IOS_result==="+IOS_result);
-
-    }
+//    public static  void main(String args[]){
+//
+//        String AndroidAppkey="5b504eb6a40fa35084000068";
+//        String AndroidAppMasterSecret="agygyb9svtewqdgpj4vrnx7tiv7mc2wz";
+//        String alias="user_id_longhu_17787";
+//        String alias_type="user_id";
+//        String AndroidTicker="Android 啥阿萨 ";
+//        String AndroidTitle="项目填报提醒";
+//        String AndroidText="项目[杭州龙湖大江东B项目一期1组团] 今日状态填报提醒";
+//        String AndroidCustom="Android_message";
+//        String AndroidMessageId="358540";
+//       boolean Android_result= sendAndroidCustomizedcast(AndroidAppkey,AndroidAppMasterSecret,alias,alias_type,AndroidTicker,AndroidTitle,AndroidText,AndroidCustom,AndroidMessageId);
+//
+//        String IOSAppkey="5b559ccb8f4a9d7a4800000f";
+//        String IOSAppMasterSecret="zzl7yp8youbkvto9os8ucs1x2fu6rdw2";
+//        String IOSAlert="项目[杭州龙湖大江东B项目一期1组团] 今日状态填报提醒";
+//        String IOSMessageId="358540";
+////       boolean IOS_result= sendIOSCustomizedcast(IOSAppkey,IOSAppMasterSecret,alias,alias_type,IOSAlert,IOSMessageId, 0);
+//
+//
+//       // logger.debug("Android_result==="+Android_result);
+//        //logger.debug("IOS_result==="+IOS_result);
+//
+//    }
 }

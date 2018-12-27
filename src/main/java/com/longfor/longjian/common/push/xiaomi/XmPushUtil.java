@@ -51,14 +51,14 @@ public class XmPushUtil {
         return flag;
     }
 
-    public  static void main(String args[]){
-        String APP_SECRET_KEY="vk8L5K3GgnhP0WxkXgx7yg==";
-        String MY_PACKAGE_NAME="com.longfor.building";
-        String title ="测测看看";
-        String description ="但是速度速度所多所多所多所打扫打扫打扫的所多";
-        List<String> accoutList = new ArrayList<String>();
-        accoutList.add("user_id_longhu_16764");  //useraccount非空白，不能包含逗号, 长度小于128
-        boolean flag=sendMessageToUserAccounts(APP_SECRET_KEY,MY_PACKAGE_NAME,title,description,accoutList);
-        System.out.println(flag);
-    }
+//    public  static void main(String args[]){
+//        String APP_SECRET_KEY="vk8L5K3GgnhP0WxkXgx7yg==";
+//        String MY_PACKAGE_NAME="com.longfor.building";
+//        String title ="测测看看";
+//        String description ="但是速度速度所多所多所多所打扫打扫打扫的所多";
+//        List<String> accoutList = new ArrayList<String>();
+//        accoutList.add("user_id_longhu_16764");  //useraccount非空白，不能包含逗号, 长度小于128
+//        boolean flag=sendMessageToUserAccounts(APP_SECRET_KEY,MY_PACKAGE_NAME,title,description,accoutList);
+//        System.out.println(flag);
+//    }
 }
