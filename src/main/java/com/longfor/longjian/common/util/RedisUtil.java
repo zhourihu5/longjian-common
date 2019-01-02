@@ -1,5 +1,6 @@
 package com.longfor.longjian.common.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class RedisUtil {
 
     private static final TimeUnit unit = TimeUnit.HOURS;
@@ -40,6 +42,10 @@ public class RedisUtil {
     public Object getHash(Object key, Object hashKey) {
         HashOperations<Object, Object, Object> operations = redisTemplate.opsForHash();
         return operations.get(key, hashKey);
+    }
+
+    public void del(String key) {
+        redisTemplate.delete(key);
     }
 
 }
