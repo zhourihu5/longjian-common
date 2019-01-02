@@ -1,5 +1,7 @@
 package com.longfor.longjian.common.exception;
 
+import com.longfor.longjian.common.consts.ErrorNumEnum;
+
 public class CommonRuntimeException extends RuntimeException {
 
     private String code;
@@ -30,6 +32,12 @@ public class CommonRuntimeException extends RuntimeException {
         this.message = message;
     }
 
+    public CommonRuntimeException(ErrorNumEnum errorNumEnum) {
+        super(errorNumEnum.getMessage());
+        this.code = errorNumEnum.getCode().toString();
+        this.message = errorNumEnum.getMessage();
+    }
+
     public String getCode() {
         return code;
     }
@@ -38,4 +46,5 @@ public class CommonRuntimeException extends RuntimeException {
     public String getMessage() {
         return message;
     }
+
 }
