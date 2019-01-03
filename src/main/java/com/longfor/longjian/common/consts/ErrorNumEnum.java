@@ -27,7 +27,11 @@ public enum ErrorNumEnum {
     /**
      * 您无权进行此操作
      */
-    AccessDenied(403, "您无权进行此操作");
+    AccessDenied(403, "您无权进行此操作"),
+    /**
+     * 您无此功能权限
+     */
+    PermissionDenied(401, "您无此功能权限");
 
     private Integer code;
     private String message;
