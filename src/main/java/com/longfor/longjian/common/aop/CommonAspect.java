@@ -3,8 +3,11 @@ package com.longfor.longjian.common.aop;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.consts.DragonShardConstants;
 import com.longfor.longjian.common.entity.UserBase;
 import com.longfor.longjian.common.exception.CommonException;
+import com.longfor.longjian.common.exception.CommonRuntimeException;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.filter.UrlFilter;
 import com.longfor.longjian.common.util.SessionInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -19,12 +22,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
@@ -41,6 +47,12 @@ import java.util.List;
 @Configuration
 public class CommonAspect {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    private final Environment env;
+
+    public CommonAspect(Environment env) {
+        this.env = env;
+    }
 
     private static Boolean aimEnable;
 
@@ -86,14 +98,14 @@ public class CommonAspect {
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void afterThrowing(JoinPoint joinPoint, Throwable e) {
-//        if (env.acceptsProfiles(DragonShardConstants.SPRING_PROFILE_DEVELOPMENT)) {
-//            log.error("异常: {}.{}() 原因 = \'{}\' 信息 = \'{}\'", joinPoint.getSignature().getDeclaringTypeName(),
-//                joinPoint.getSignature().getName(), e.getCause() != null? e.getCause() : "NULL", e.getMessage(), e);
-//
-//        } else {
-//            log.error("异常: {}.{}() 原因 = {}", joinPoint.getSignature().getDeclaringTypeName(),
-//                joinPoint.getSignature().getName(), e.getCause() != null? e.getCause() : "NULL");
-//        }
+        if (env.acceptsProfiles(DragonShardConstants.SPRING_PROFILE_DEVELOPMENT)) {
+            log.error("异常: {}.{}() 原因 = \'{}\' 信息 = \'{}\'", joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), e.getCause() != null? e.getCause() : "NULL", e.getMessage(), e);
+
+        } else {
+            log.error("异常: {}.{}() 原因 = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(), e.getCause() != null? e.getCause() : "NULL");
+        }
     }
 
     /**
@@ -109,7 +121,7 @@ public class CommonAspect {
 //        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         if (log.isDebugEnabled()) {
             log.debug("开始: {}.{}() 参数 = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), JSON.toJSONString(joinPoint.getArgs()));
+                joinPoint.getSignature().getName(), paramStr(joinPoint.getArgs()));
         }
         String servletPath = request.getServletPath();
         String pathInfo = request.getPathInfo();
@@ -132,11 +144,29 @@ public class CommonAspect {
             }
             return result;
         } catch (Exception e) {
-            log.error("参数异常: {} in {}.{}()", JSON.toJSONString(joinPoint.getArgs()),
+            log.error("参数异常: {} in {}.{}()", paramStr(joinPoint.getArgs()),
                 joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e);
-            e.printStackTrace();
-            throw e;
+            if (e instanceof CommonException ||
+                    e instanceof CommonRuntimeException ||
+                    e instanceof LjBaseRuntimeException) {
+                throw e;
+            }
+            throw new CommonException("服务器错误，请联系管理员");
         }
+    }
+
+    private String paramStr(Object[] args) {
+        List<Object> list = Lists.newArrayList();
+        for (Object arg : args) {
+            if (arg instanceof ServletRequest) {
+                continue;
+            }
+            if (arg instanceof ServletResponse) {
+                continue;
+            }
+            list.add(arg);
+        }
+        return JSON.toJSONString(list);
     }
 
     private boolean validWhite(String url) {
