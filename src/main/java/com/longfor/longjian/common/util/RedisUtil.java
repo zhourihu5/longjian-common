@@ -24,6 +24,7 @@ public class RedisUtil {
         operations.set(key, val);
     }
 
+
     public void setHash(Object key, Map<Object, Object> val) {
         setHash(key, val, null, null);
     }
@@ -48,4 +49,7 @@ public class RedisUtil {
         redisTemplate.delete(key);
     }
 
+    public Object get(Object key){
+        return redisTemplate.boundValueOps(key).get();
+    }
 }
