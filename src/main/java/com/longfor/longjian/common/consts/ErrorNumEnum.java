@@ -31,7 +31,11 @@ public enum ErrorNumEnum {
     /**
      * 您无此功能权限
      */
-    PermissionDenied(401, "您无此功能权限");
+    PermissionDenied(401, "您无此功能权限"),
+    /**
+     * 没有找到相关的集团信息
+     */
+    GroupInfoNotFound(202001, "没有找到相关的集团信息");
 
     private Integer code;
     private String message;
