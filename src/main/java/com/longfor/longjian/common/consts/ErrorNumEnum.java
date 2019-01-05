@@ -31,8 +31,19 @@ public enum ErrorNumEnum {
     /**
      * 您无此功能权限
      */
-    PermissionDenied(401, "您无此功能权限");
-
+    PermissionDenied(401, "您无此功能权限"),
+    /**
+     *没有找到相关的项目阶段信息
+     */
+    ProjectStateNotFound(202365, "没有找到相关的项目阶段信息"),
+    /**
+     * 字段格式错误
+     */
+    FormatExtractFieldError(202371, "字段格式错误"),
+    /**
+     * 没有找到相关的项目字段信息
+     */
+    CustomFieldNotFound(202366, "没有找到相关的项目字段信息");
     private Integer code;
     private String message;
 
