@@ -33,7 +33,7 @@ public enum ErrorNumEnum {
      */
     PermissionDenied(401, "您无此功能权限"),
     /**
-     *没有找到相关的项目阶段信息
+     * 没有找到相关的项目阶段信息
      */
     ProjectStateNotFound(202365, "没有找到相关的项目阶段信息"),
     /**
@@ -43,7 +43,12 @@ public enum ErrorNumEnum {
     /**
      * 没有找到相关的项目字段信息
      */
-    CustomFieldNotFound(202366, "没有找到相关的项目字段信息");
+    CustomFieldNotFound(202366, "没有找到相关的项目字段信息"),
+    /**
+     * 没有找到相关的集团信息
+     */
+    GroupInfoNotFound(202001, "没有找到相关的集团信息");
+
     private Integer code;
     private String message;
 
