@@ -52,10 +52,12 @@ public enum ErrorNumEnum {
      * 没有找到相关的项目类型信息
      */
     ProjectTypeNotFound(202355, "没有找到相关的项目类型信息"),
+    EditProjectError(202353, "编辑项目失败"),
     /**
      * 没有找到相关的项目阶段信息
      */
     ProjectStageNotFound(202359, "没有找到相关的项目阶段信息");
+
 
     private Integer code;
     private String message;
