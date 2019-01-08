@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +50,53 @@ public class RedisUtil {
         redisTemplate.delete(key);
     }
 
-    public Object get(Object key){
+    public Object get(Object key) {
         return redisTemplate.boundValueOps(key).get();
+    }
+
+    public long lGetListSize(String key){
+        try {
+            return redisTemplate.opsForList().size(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public boolean exists(String key) {
+        try {
+            return redisTemplate.hasKey(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Object> lGet(String key, long start, long end) {
+        try {
+            return redisTemplate.opsForList().range(key, start, end);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public long lRemove(String key,long count,Object value){
+        try{
+            Long remove = redisTemplate.opsForList().remove(key,count,value);
+                return remove;
+        }catch(Exception e){
+            e.printStackTrace();
+                return 0;
+}
+}
+
+    public long deleteHash(Object key, Object val) {
+        try {
+            Long delete = redisTemplate.opsForHash().delete(key, val);
+            return delete;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }
