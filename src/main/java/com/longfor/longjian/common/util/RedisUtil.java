@@ -1,15 +1,23 @@
 package com.longfor.longjian.common.util;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Resource;
+
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.longfor.longjian.common.entity.TeamBase;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -87,8 +95,8 @@ public class RedisUtil {
         }catch(Exception e){
             e.printStackTrace();
                 return 0;
-}
-}
+        }
+    }
 
     public long deleteHash(Object key, Object val) {
         try {
@@ -98,5 +106,34 @@ public class RedisUtil {
             e.printStackTrace();
             return 0;
         }
+    }
+    
+    public long rpush(String key,Object value){
+        try{
+        	return redisTemplate.opsForList().rightPush(key, value);
+        }catch(Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    
+    public Object lpop(String key){
+        try{
+        	return redisTemplate.opsForList().leftPop(key);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public <T> T getHashObject(Object key,Class<T> clazz) {
+    	try {
+    		HashOperations<Object, Object, Object> operations = redisTemplate.opsForHash();
+            Map<Object, Object> param=operations.entries(key);
+            JSONObject json=(JSONObject)JSON.toJSON(param);
+            return JSON.toJavaObject(json, clazz);
+		} catch (Exception e) {
+			return null;
+		}
     }
 }
