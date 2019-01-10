@@ -52,12 +52,22 @@ public enum ErrorNumEnum {
      * 没有找到相关的项目类型信息
      */
     ProjectTypeNotFound(202355, "没有找到相关的项目类型信息"),
+    /**
+     * 编辑项目失败
+     */
     EditProjectError(202353, "编辑项目失败"),
     /**
      * 没有找到相关的项目阶段信息
      */
-    ProjectStageNotFound(202359, "没有找到相关的项目阶段信息");
-
+    ProjectStageNotFound(202359, "没有找到相关的项目阶段信息"),
+    /**
+     * 用户名，密码或企业编码错误
+     */
+    UserNameOrPasswordError(1000, "用户名，密码或企业编码错误"),
+    /**
+     * 账号状态异常，暂时无法登录
+     */
+    UserStatusNotNormal(1001, "账号状态异常，暂时无法登录");
 
     private Integer code;
     private String message;

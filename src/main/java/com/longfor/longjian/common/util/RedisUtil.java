@@ -54,7 +54,7 @@ public class RedisUtil {
         return redisTemplate.boundValueOps(key).get();
     }
 
-    public long lGetListSize(String key){
+    public long lGetListSize(String key) {
         try {
             return redisTemplate.opsForList().size(key);
         } catch (Exception e) {
@@ -80,15 +80,16 @@ public class RedisUtil {
             return null;
         }
     }
-    public long lRemove(String key,long count,Object value){
-        try{
-            Long remove = redisTemplate.opsForList().remove(key,count,value);
-                return remove;
-        }catch(Exception e){
+
+    public long lRemove(String key, long count, Object value) {
+        try {
+            Long remove = redisTemplate.opsForList().remove(key, count, value);
+            return remove;
+        } catch (Exception e) {
             e.printStackTrace();
-                return 0;
-}
-}
+            return 0;
+        }
+    }
 
     public long deleteHash(Object key, Object val) {
         try {
@@ -99,4 +100,20 @@ public class RedisUtil {
             return 0;
         }
     }
+
+    public void setEx(Object key, Object val) {
+        setEx(key, val, null, null);
+    }
+
+    public void setEx(Object key, Object val, Long timeout, TimeUnit unit) {
+        ValueOperations<Object, Object> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(key, val);
+        if (timeout != null) {
+            if (unit == null) {
+                unit = RedisUtil.unit;
+            }
+            redisTemplate.expire(key, timeout, unit);
+        }
+    }
+
 }
