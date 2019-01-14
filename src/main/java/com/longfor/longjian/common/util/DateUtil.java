@@ -1,11 +1,13 @@
 package com.longfor.longjian.common.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -17,54 +19,115 @@ import java.util.Date;
 @Slf4j
 public class DateUtil {
 
-    private static final SimpleDateFormat FULL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * String(yyyy-MM-dd HH:mm:ss)转Date
+     * String转Date
+     * 使用默认时间格式 yyyy-MM-dd HH:mm:ss
      *
-     * @param time
+     * @param dateTimeStr
      * @return
      */
-    public static Date stringToDate(String time) {
-        Date date = null;
-        try {
-            date = FULL_DATE_FORMAT.parse(time);
-        } catch (ParseException e) {
-            log.info("时间转换异常", e);
+    public static Date stringToDate(String dateTimeStr) {
+        return stringToDate(dateTimeStr, null);
+    }
+
+    /**
+     * String转Date
+     *
+     * @param dateTimeStr
+     * @param formatStr
+     * @return
+     */
+    public static Date stringToDate(String dateTimeStr, String formatStr) {
+        if (StringUtils.isEmpty(formatStr)) {
+            formatStr = STANDARD_FORMAT;
         }
-        return date;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(formatStr);
+        DateTime dateTime = dateTimeFormatter.parseDateTime(dateTimeStr);
+        return dateTime.toDate();
     }
 
     /**
-     * Date转String(yyyy-MM-dd HH:mm:ss)
+     * Date转String
+     * 使用默认时间格式 yyyy-MM-dd HH:mm:ss
      *
-     * @param time
+     * @param date
      * @return
      */
-    public static String dateToString(Date time) {
-        return FULL_DATE_FORMAT.format(time);
+    public static String dateToString(Date date) {
+        return dateToString(date, null);
     }
 
     /**
-     * String(yyyy-MM-dd HH:mm:ss)转10位时间戳
+     * Date转String
      *
-     * @param time
+     * @param date
+     * @param formatStr
      * @return
      */
-    public static Integer stringToTimestamp(String time) {
-        return new BigDecimal(Timestamp.valueOf(time).getTime()).divide(new BigDecimal(1000), BigDecimal.ROUND_HALF_UP).intValue();
+    public static String dateToString(Date date, String formatStr) {
+        if (date == null) {
+            return StringUtils.EMPTY;
+        }
+        if (StringUtils.isEmpty(formatStr)) {
+            formatStr = STANDARD_FORMAT;
+        }
+        DateTime dateTime = new DateTime(date);
+        return dateTime.toString(formatStr);
     }
 
     /**
-     * 10位int型的时间戳转换为String(yyyy-MM-dd HH:mm:ss)
+     * String转10位时间戳
+     * 使用默认时间格式 yyyy-MM-dd HH:mm:ss
+     *
+     * @param dateTimeStr
+     * @return
+     */
+    public static Integer stringToTimestamp(String dateTimeStr) {
+        return stringToTimestamp(dateTimeStr, null);
+    }
+
+    /**
+     * String转10位时间戳
+     *
+     * @param dateTimeStr
+     * @param formatStr
+     * @return
+     */
+    public static Integer stringToTimestamp(String dateTimeStr, String formatStr) {
+        if (StringUtils.isEmpty(formatStr)) {
+            formatStr = STANDARD_FORMAT;
+        }
+        Date date = stringToDate(dateTimeStr, formatStr);
+        return new BigDecimal(date.getTime()).divide(new BigDecimal(1000), BigDecimal.ROUND_HALF_UP).intValue();
+    }
+
+    /**
+     * 10位int型的时间戳转换为String
+     * 使用默认时间格式 yyyy-MM-dd HH:mm:ss
      *
      * @param time
      * @return
      */
     public static String timestampToString(Integer time) {
+        return timestampToString(time, null);
+    }
+
+    /**
+     * 10位int型的时间戳转换为String
+     *
+     * @param time
+     * @return
+     */
+    public static String timestampToString(Integer time, String formatStr) {
+        if (StringUtils.isEmpty(formatStr)) {
+            formatStr = STANDARD_FORMAT;
+        }
         long temp = new BigDecimal(time).multiply(new BigDecimal(1000)).longValue();
         Timestamp timestamp = new Timestamp(temp);
-        return FULL_DATE_FORMAT.format(timestamp);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(formatStr);
+        return new DateTime(timestamp).toString(dateTimeFormatter);
     }
 
     /**
