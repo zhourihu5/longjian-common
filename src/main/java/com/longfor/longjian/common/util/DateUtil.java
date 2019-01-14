@@ -1,6 +1,5 @@
 package com.longfor.longjian.common.util;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -16,7 +15,6 @@ import java.util.Date;
  * @author zkm
  * @date 2019/1/11 14:10
  */
-@Slf4j
 public class DateUtil {
 
     private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
