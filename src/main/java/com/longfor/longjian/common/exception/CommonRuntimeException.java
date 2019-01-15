@@ -8,10 +8,12 @@ public class CommonRuntimeException extends RuntimeException {
     private String message;
 
     public CommonRuntimeException() {
+        super();
     }
 
     public CommonRuntimeException(String message) {
         super(message);
+        this.message = message;
     }
 
     public CommonRuntimeException(String message, Throwable cause) {
@@ -24,6 +26,7 @@ public class CommonRuntimeException extends RuntimeException {
 
     public CommonRuntimeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+        this.message = message;
     }
 
     public CommonRuntimeException(String code, String message) {
