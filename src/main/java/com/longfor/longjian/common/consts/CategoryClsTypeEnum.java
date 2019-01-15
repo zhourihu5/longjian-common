@@ -1,5 +1,9 @@
 package com.longfor.longjian.common.consts;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
 /**
  * 任务类型的主类型枚举类
  *
@@ -74,6 +78,23 @@ public enum CategoryClsTypeEnum {
     public String getName() {
         return name;
     }
+    
+    private static final Map<Integer, CategoryClsTypeEnum> clsTypeMap = Maps.newHashMap();
+
+    static {
+        for (CategoryClsTypeEnum type : CategoryClsTypeEnum.values()) {
+        	clsTypeMap.put(type.getValue(), type);
+        }
+    }
+	
+	public static String getName(Integer value) {
+		CategoryClsTypeEnum type=clsTypeMap.get(value);
+		if(type==null) {
+			return "";
+		}
+		return type.getName();
+		
+	}
 
     public Integer getValue() {
         return value;
