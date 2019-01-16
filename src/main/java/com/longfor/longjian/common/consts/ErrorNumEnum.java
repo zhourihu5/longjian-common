@@ -63,11 +63,46 @@ public enum ErrorNumEnum {
     /**
      * 用户名，密码或企业编码错误
      */
+
     UserNameOrPasswordError(1000, "用户名，密码或企业编码错误"),
+    /**
+     * 参数有误
+     */
+    ArgError(406, "参数有误"),
+    /**
+     * 参数有误
+     */
+    DeleteTeamError(202014, "删除公司失败"),
+    /**
+     * 编辑公司失败
+     */
+    EditTeamError(202013,"编辑公司失败"),
+    /**
+     *
+     */
+    EditUserPasswordError(202125,"修改密码失败"),
+    /**
+     * 没有找到相关的用户信息
+     */
+    UserInfoNotFound(202120,"没有找到相关的用户信息"),
+    /**
+     *修改用户集团角色失败
+     */
+    EditUserInGroupRoleError(202240,"修改用户集团角色失败"),
+    /**
+     * 没有找到相关的公司信息
+     */
+    TeamInfoNotFound(202011,"没有找到相关的公司信息"),
+
+    /**
+     * 新建公司失败
+     */
+    CreateTeamError(202012,"新建公司失败"),
+
     /**
      * 账号状态异常，暂时无法登录
      */
-    UserStatusNotNormal(1001, "账号状态异常，暂时无法登录");
+    UserStatusNotNormal(1001,"账号状态异常，暂时无法登录");
 
     private Integer code;
     private String message;
