@@ -41,7 +41,7 @@ public class SessionInfo {
         return val;
     }
 
-    public void getBaseInfo(String key, Object val) {
+    public void setBaseInfo(String key, Object val) {
         String token = getToken();
         if (StringUtils.isNotBlank(token)) {
             redisUtil.setHash(SessionInfo.getTokenKey(token, Boolean.TRUE), key, val);
