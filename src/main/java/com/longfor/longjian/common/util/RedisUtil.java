@@ -1,9 +1,6 @@
 package com.longfor.longjian.common.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -41,6 +38,21 @@ public class RedisUtil {
     public void setHash(Object key, Map<Object, Object> val, Long timeout, TimeUnit unit) {
         HashOperations<Object, Object, Object> operations = redisTemplate.opsForHash();
         operations.putAll(key, val);
+        if (timeout != null) {
+            if (unit == null) {
+                unit = RedisUtil.unit;
+            }
+            redisTemplate.expire(key, timeout, unit);
+        }
+    }
+
+    public void setHash(Object key, Object hashKey, Object val) {
+        setHash(key, hashKey, val, null, null);
+    }
+
+    public void setHash(Object key, Object hashKey, Object val, Long timeout, TimeUnit unit) {
+        HashOperations<Object, Object, Object> operations = redisTemplate.opsForHash();
+        operations.put(key, hashKey, val);
         if (timeout != null) {
             if (unit == null) {
                 unit = RedisUtil.unit;

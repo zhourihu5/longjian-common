@@ -41,6 +41,13 @@ public class SessionInfo {
         return val;
     }
 
+    public void setBaseInfo(String key, Object val) {
+        String token = getToken();
+        if (StringUtils.isNotBlank(token)) {
+            redisUtil.setHash(SessionInfo.getTokenKey(token, Boolean.TRUE), key, val);
+        }
+    }
+
     public UserBase getSessionUser() {
         return (UserBase) getBaseInfo("user");
     }
