@@ -96,9 +96,9 @@ public class CtrlTool {
                 String err = LoginEnum.NO_PERMISSION.getName() + "--" + String.join("或", perms);
                 log.warn(err);
                 throw new Exception(err);
-            } else {
-                throw new Exception("perms 不能为空");
             }
+        } else {
+            throw new Exception("perms 不能为空");
         }
     }
 
