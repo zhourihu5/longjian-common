@@ -54,11 +54,11 @@ public class CommonAspect {
         this.env = env;
     }
 
-    private static Boolean aimEnable;
+    private static Boolean aopEnable;
 
-    @Value("${aim.enable}")
-    public void setAimEnable(String aimEnable) {
-        CommonAspect.aimEnable = Boolean.parseBoolean(aimEnable);
+    @Value("${aop.enable}")
+    public void setAopEnable(String aopEnable) {
+        CommonAspect.aopEnable = Boolean.parseBoolean(aopEnable);
     }
 
     private PathMatcher pathMarch = new AntPathMatcher();
@@ -134,7 +134,7 @@ public class CommonAspect {
         }
         try {
             UserBase userBase = sessionInfo.getSessionUser();
-            if (userBase == null && !validWhite(servletPath) && aimEnable) {
+            if (userBase == null && !validWhite(servletPath) && aopEnable) {
                 return new LjBaseResponse("token失效，请重新登录");
             }
             Object result = joinPoint.proceed();
