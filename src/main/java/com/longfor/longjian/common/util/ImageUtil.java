@@ -1,12 +1,5 @@
 package com.longfor.longjian.common.util;
 
-import com.itextpdf.xmp.impl.Base64;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import org.bouncycastle.util.encoders.UrlBase64Encoder;
-import sun.awt.SunHints;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -112,7 +105,7 @@ public class ImageUtil {
                 "utf-8");
         System.out.println(a);
     }
-
+/*
     public static void main(String[] args) throws Exception {
 //        resizeImage("E:/image/src.jpg", "E:/image/des.jpg", 100);//将图片压缩至100宽
 //        base64();
@@ -120,5 +113,5 @@ public class ImageUtil {
         String tarImgPath = "E:/image/des.jpg"; //待存储的地址
         String waterMarkContent = "张顺东-恒辉保温-海晶-项目经理 2019-01-31";  //水印内容
         addWaterMark(srcImgPath, tarImgPath, waterMarkContent, 200);
-    }
+    }*/
 }
