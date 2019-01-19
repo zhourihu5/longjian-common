@@ -25,6 +25,13 @@ public class RequestContextHolderUtil {
         return getRequestAttributes().getResponse();
     }
 
+    /**
+     * 由于各服务之间使用的是分布式session
+     * 所以该方法废弃
+     *
+     * @return
+     */
+    @Deprecated
     public static HttpSession getSession() {
         return getRequest().getSession();
     }
