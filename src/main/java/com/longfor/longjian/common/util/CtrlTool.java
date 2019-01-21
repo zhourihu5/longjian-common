@@ -3,16 +3,27 @@ package com.longfor.longjian.common.util;
 import com.alibaba.fastjson.JSON;
 import com.longfor.longjian.common.FeignClient.IPermissionService;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.commonEntity.TeamActiveModulesCommon;
 import com.longfor.longjian.common.consts.LoginEnum;
 import com.longfor.longjian.common.consts.YesNoEnum;
+import com.longfor.longjian.common.entity.ProjectBase;
+import com.longfor.longjian.common.entity.TeamBase;
+import com.longfor.longjian.common.commonEntity.TeamConfig;
+import com.longfor.longjian.common.entity.TeamModulesStatusBase;
+import com.longfor.longjian.common.entity.TeamSettingBase;
 import com.longfor.longjian.common.req.feignClientReq.ProjectPermissionReq;
 import com.longfor.longjian.common.req.feignClientReq.TeamPermissionReq;
+import com.longfor.longjian.common.service.ProjectBaseService;
+import com.longfor.longjian.common.service.TeamBaseService;
+import com.longfor.longjian.common.service.TeamSettingBaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -21,6 +32,22 @@ public class CtrlTool {
 
     @Autowired
     private IPermissionService ipermissionService;
+    @Autowired
+    private ProjectBaseService projectBaseService;
+    @Autowired
+    private SessionInfo sessionInfo;
+    @Autowired
+    private TeamBaseService teamBaseService;
+    @Autowired
+    private TeamSettingBaseService teamSettingBaseService;
+    @Autowired
+    private TeamActiveModulesCommon teamActiveModulesCommon;
+    @Value("${display_logo_url}")
+    private String displayLogoUrl;
+    @Value("{display_company_name}")
+    private String displayCompanyName;
+    @Value("{display_system_name}")
+    private String displaySystemName;
 
     /**
      * 项目鉴权，单功能判断
@@ -181,6 +208,75 @@ public class CtrlTool {
         } else {
             throw new Exception("perms 不能为空");
         }
+    }
+
+
+    public void ProjectRequired() throws Exception {
+        HttpServletRequest request = RequestContextHolderUtil.getRequest();
+        Object projectIdStr = request.getAttribute("project_id");
+        log.debug("Start to get ProjectId : " + projectIdStr);
+        //pId, err := strconv.Atoi(projectIdStr) 字符串和数字转换
+        if (projectIdStr == null || StringUtils.isBlank(projectIdStr.toString())) {
+            throw new Exception("Fail to get projectId");
+        }
+        int pid = (int) projectIdStr;
+
+        ProjectBase project = projectBaseService.getByIdNoFoundErr(pid);
+        if (project == null) {
+            throw new Exception("Fail to get project");
+        } else {
+            sessionInfo.setBaseInfo("cur_proj", project);
+        }
+
+        TeamBase team = teamBaseService.getTeamById(project.getTeamId());
+        if (team == null) {
+            throw new Exception("Fail to get team");
+        } else {
+            sessionInfo.setBaseInfo("cur_team", team);
+        }
+
+        int groupId = team.getTeamId();
+        if (team.getParentTeamId() > 0) {
+            TeamBase group = teamBaseService.getTeamById(team.getParentTeamId());
+            if (group == null) {
+                throw new Exception("Fail to get group");
+            } else {
+                sessionInfo.setBaseInfo("cur_group", group);
+                sessionInfo.setBaseInfo("team_group", group);
+            }
+        } else {
+            sessionInfo.setBaseInfo("cur_group", team);
+            sessionInfo.setBaseInfo("team_group", team);
+        }
+
+        TeamConfig teamConfig = new TeamConfig();
+        teamConfig.setLogoUrl(displayLogoUrl);
+        teamConfig.setCompangName(displayCompanyName);
+        teamConfig.setSystemName(displaySystemName);
+
+        List<TeamSettingBase> settings = teamSettingBaseService.getTeamSettingsByTeamId(groupId);
+        if (settings == null || settings.size() <= 0) {
+            throw new Exception("Fail to get teamSettings");
+        }
+        settings.forEach(c -> {
+            switch (c.getKey()) {
+                case "logo_url":
+                    teamConfig.setLogoUrl(c.getValue());
+                case "company_name":
+                    teamConfig.setCompangName(c.getValue());
+                case "system_name":
+                    teamConfig.setSystemName(c.getValue());
+                default:
+                    teamConfig.getRefusedAcceptBuildCause().add(c);
+            }
+        });
+
+//        sessionInfo.setBaseInfo("config", cfg);
+        sessionInfo.setBaseInfo("groupConfig", teamConfig);
+
+        //设置公司激活模块
+        TeamActiveModulesCommon modulesStatus = teamActiveModulesCommon.getTeamActiveModulesByTeamId(groupId);
+        request.setAttribute("modules",modulesStatus);
     }
 
 }
