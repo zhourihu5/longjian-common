@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -148,5 +149,20 @@ public class DateUtil {
     public static Integer dateToTimestamp(Date time) {
         return new BigDecimal(time.getTime()).divide(new BigDecimal(1000), BigDecimal.ROUND_HALF_UP).intValue();
     }
+
+
+    /**
+     * thisDay的下一天
+     *
+     * @param thisDay
+     * @return
+     */
+    public static Date nextDate(Date thisDay){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(thisDay);
+        calendar.add(Calendar.DATE,1);
+        return calendar.getTime();
+    }
+
 
 }
