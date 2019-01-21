@@ -211,7 +211,7 @@ public class CtrlTool {
     }
 
 
-    public void ProjectRequired() throws Exception {
+    public void projectRequired() throws Exception {
         HttpServletRequest request = RequestContextHolderUtil.getRequest();
         Object projectIdStr = request.getAttribute("project_id");
         log.debug("Start to get ProjectId : " + projectIdStr);
@@ -276,7 +276,67 @@ public class CtrlTool {
 
         //设置公司激活模块
         TeamActiveModulesCommon modulesStatus = teamActiveModulesCommon.getTeamActiveModulesByTeamId(groupId);
-        request.setAttribute("modules",modulesStatus);
+        sessionInfo.setBaseInfo("modules",modulesStatus);
+    }
+
+    public void teamRequired() throws Exception {
+        HttpServletRequest request = RequestContextHolderUtil.getRequest();
+        Object teamIdStr = request.getAttribute("team_id");
+        if (teamIdStr == null || StringUtils.isBlank(teamIdStr.toString())){
+            teamIdStr = request.getAttribute("groupId");
+        }
+        //teamId, err := strconv.Atoi(teamIdStr)字符串和数字转换
+        if (teamIdStr == null || StringUtils.isBlank(teamIdStr.toString())){
+            throw new Exception("Fail to get teamId");
+        }
+        int teamId = (int)teamIdStr;
+
+        TeamBase team = teamBaseService.getTeamById(teamId);
+        if (team == null) {
+            throw new Exception("Fail to get team");
+        }
+//        else {
+//            sessionInfo.setBaseInfo("cur_team", team);
+//        }
+        TeamBase teamGroup = team;
+        if (team.getParentTeamId() > 0){
+            teamGroup = teamBaseService.getTeamById(team.getParentTeamId());
+            if (teamGroup == null) {
+                throw new Exception("Fail to get group");
+            }
+        }
+
+        TeamConfig teamConfig = new TeamConfig();
+        teamConfig.setLogoUrl(displayLogoUrl);
+        teamConfig.setCompangName(displayCompanyName);
+        teamConfig.setSystemName(displaySystemName);
+
+        List<TeamSettingBase> settings = teamSettingBaseService.getTeamSettingsByTeamId(teamGroup.getTeamId());
+        if (settings == null || settings.size() <= 0) {
+            throw new Exception("Fail to get teamSettings");
+        }
+        settings.forEach(c -> {
+            switch (c.getKey()) {
+                case "logo_url":
+                    teamConfig.setLogoUrl(c.getValue());
+                case "company_name":
+                    teamConfig.setCompangName(c.getValue());
+                case "system_name":
+                    teamConfig.setSystemName(c.getValue());
+                default:
+                    teamConfig.getRefusedAcceptBuildCause().add(c);
+            }
+        });
+
+        //设置公司激活模块
+        TeamActiveModulesCommon modulesStatus = teamActiveModulesCommon.getTeamActiveModulesByTeamId(teamGroup.getTeamId());
+
+        sessionInfo.setBaseInfo("cur_team", team);
+        sessionInfo.setBaseInfo("cur_group", teamGroup);
+        sessionInfo.setBaseInfo("team_group", teamGroup);
+//        sessionInfo.setBaseInfo("config",  config.Config);
+        sessionInfo.setBaseInfo("groupConfig", teamConfig);
+        sessionInfo.setBaseInfo("modules", modulesStatus);
     }
 
 }
