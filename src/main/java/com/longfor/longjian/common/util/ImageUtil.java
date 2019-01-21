@@ -53,18 +53,21 @@ public class ImageUtil {
             int srcImgHeight = srcImg.getHeight(null);//获取图片的高
             int scale = srcImgWidth / scaleSize;
             // 加水印
-            BufferedImage bufImg = new BufferedImage(scaleSize, srcImgHeight / scale, BufferedImage.TYPE_INT_RGB);
-            setRGB(bufImg.getColorModel(), bufImg.getRaster(), 0, srcImgHeight / scale - 15, scaleSize, 15, 16777215);
+            BufferedImage bufImg = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
+//            setRGB(bufImg.getColorModel(), bufImg.getRaster(), 0, srcImgHeight / scale - 15, scaleSize, 15, 16777215);
             Graphics2D g = bufImg.createGraphics();
-            g.drawImage(srcImg.getScaledInstance(scaleSize, srcImgHeight / scale, Image.SCALE_AREA_AVERAGING), 0,-15, null);
+            g.drawImage(srcImg, 0, 0, 200, 200, null);
             g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g.setColor(markContentColor); //根据图片的背景设置水印颜色
             g.setFont(font);              //设置字体
 
             //设置水印的坐标
             int x = 0;
-            int y = srcImgHeight / scale - 5;
+            int y = 30;
             g.drawString(waterMarkContent, x, y);  //画出水印
+            x = 0;
+            y = 50;
+            g.drawString("ssssssssssssss", x, y);  //画出水印
             g.dispose();
             // 输出图片
             FileOutputStream outImgStream = new FileOutputStream(tarImgPath);
@@ -106,12 +109,12 @@ public class ImageUtil {
         System.out.println(a);
     }
 
-//    public static void main(String[] args) throws Exception {
-////        resizeImage("E:/image/src.jpg", "E:/image/des.jpg", 100);//将图片压缩至100宽
-////        base64();
-//        String srcImgPath = "E:/image/src.jpg"; //源图片地址
-//        String tarImgPath = "E:/image/des.jpg"; //待存储的地址
-//        String waterMarkContent = "张顺东-恒辉保温-海晶-项目经理 2019-01-31";  //水印内容
-//        addWaterMark(srcImgPath, tarImgPath, waterMarkContent, 200);
-//    }
+    public static void main(String[] args) throws Exception {
+//        resizeImage("E:/image/src.jpg", "E:/image/des.jpg", 100);//将图片压缩至100宽
+//        base64();
+        String srcImgPath = "E:/image/src.jpg"; //源图片地址
+        String tarImgPath = "E:/image/des.jpg"; //待存储的地址
+        String waterMarkContent = "张顺东-恒辉保温-海晶-项目经理 2019-01-31";  //水印内容
+        addWaterMark(srcImgPath, tarImgPath, waterMarkContent, 200);
+    }
 }
