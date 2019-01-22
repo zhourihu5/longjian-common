@@ -1,5 +1,7 @@
 package com.longfor.longjian.common.util;
 
+import com.sun.imageio.plugins.png.PNGImageWriter;
+import com.sun.imageio.plugins.png.PNGImageWriterSpi;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.imageio.ImageIO;
@@ -50,6 +52,7 @@ public class WaterMarkUtils {
 
             g.drawString(waterMarkContent, posx+2, posy+2);  //画出水印
             g.dispose();
+
             // 输出图片
             //FileOutputStream outImgStream = new FileOutputStream(tarImgPath);
             ImageIO.write(bufImg, "png", outImgStream);
@@ -66,6 +69,86 @@ public class WaterMarkUtils {
         return g.getFontMetrics(g.getFont()).charsWidth(waterMarkContent.toCharArray(), 0, waterMarkContent.length());
     }
 
+    public static void cutSize(String src_fn,String dst_fn,Integer posx,Integer posy,Integer width,Integer height){
+        try(FileOutputStream outImgStream = new FileOutputStream(dst_fn)){
+            // 读取原图片信息
+            File oldFile = new File(src_fn);//得到文件
+            /** 对服务器上的临时文件进行处理 */
+            Image srcFile = ImageIO.read(oldFile);
+            int w = srcFile.getWidth(null);
+            //  System.out.println(w);
+            int h = srcFile.getHeight(null);
+            //  System.out.println(h);
+            double bili;
+            if(width>0){
+                bili=width/(double)w;
+                height = (int) (h*bili);
+            }else{
+                if(height>0){
+                    bili=height/(double)h;
+                    width = (int) (w*bili);
+                }
+            }
+            int left=posx-width/2,top=posy-height/2;
+            left=(left<0?0:left);
+            top=(top<0?0:top);
+            /** 宽,高设定 */
+            BufferedImage tag = new BufferedImage(width, height,
+                    BufferedImage.TYPE_INT_RGB);
+            tag.getGraphics().drawImage(srcFile, left, top, width, height, null);
+            //String filePrex = oldFile.getName().substring(0, oldFile.getName().indexOf('.'));
+            /** 压缩后的文件名 */
+            //newImage = filePrex + smallIcon+  oldFile.getName().substring(filePrex.length());
+            //PIN
+            File pinFile=new File(WaterMarkUtils.class.getResource("/"+PIN).toURI());
+            if(pinFile.exists()) {
+                BufferedImage pinImg = ImageIO.read(pinFile);
+                tag.getGraphics().drawImage(pinImg, left - pinImg.getWidth(), top - pinImg.getHeight(), pinImg.getWidth(), pinImg.getHeight(), null);
+            }
+             ImageIO.write(tag, "png", outImgStream);
+            outImgStream.flush();
+            // outImgStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void resize(String src_fn,String dst_fn,Integer width,Integer height){
+        try(FileOutputStream outImgStream = new FileOutputStream(dst_fn)){
+            // 读取原图片信息
+            File oldFile = new File(src_fn);//得到文件
+            /** 对服务器上的临时文件进行处理 */
+            Image srcFile = ImageIO.read(oldFile);
+            int w = srcFile.getWidth(null);
+            //  System.out.println(w);
+            int h = srcFile.getHeight(null);
+            //  System.out.println(h);
+            double bili;
+            if(width>0){
+                bili=width/(double)w;
+                height = (int) (h*bili);
+            }else{
+                if(height>0){
+                    bili=height/(double)h;
+                    width = (int) (w*bili);
+                }
+            }
+
+            /** 宽,高设定 */
+            BufferedImage tag = new BufferedImage(width, height,
+                    BufferedImage.TYPE_INT_RGB);
+            tag.getGraphics().drawImage(srcFile, 0, 0, width, height, null);
+            //String filePrex = oldFile.getName().substring(0, oldFile.getName().indexOf('.'));
+            /** 压缩后的文件名 */
+            //newImage = filePrex + smallIcon+  oldFile.getName().substring(filePrex.length());
+
+            ImageIO.write(tag, "png", outImgStream);
+            outImgStream.flush();
+            // outImgStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     public static Pair<Integer,Integer> getImageInfo(String filePath) throws IOException {
         File srcImgFile = new File(filePath);//得到文件
         Image srcImg = ImageIO.read(srcImgFile);//文件转化为图片
