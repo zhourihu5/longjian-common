@@ -2,13 +2,14 @@ package com.longfor.longjian.common.commonEntity;
 
 import com.longfor.longjian.common.entity.TeamSettingBase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeamConfig {
     private String compangName;
     private String logoUrl;
     private String systemName;
-    private List<TeamSettingBase> refusedAcceptBuildCause;
+    private List<TeamSettingBase> refusedAcceptBuildCause = new ArrayList<>();
 
     public String getCompangName() {
         return compangName;

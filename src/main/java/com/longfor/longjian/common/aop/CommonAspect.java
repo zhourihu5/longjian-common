@@ -9,6 +9,8 @@ import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.common.exception.CommonRuntimeException;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.filter.UrlFilter;
+import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.RequestContextHolderUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -23,12 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +49,11 @@ import java.util.List;
  **/
 @Aspect
 @Configuration
+@Component
 public class CommonAspect {
+    @Resource
+    private CtrlTool ctrlTool;
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final Environment env;
@@ -108,6 +116,7 @@ public class CommonAspect {
         }
     }
 
+
     /**
      * Advice that logs when a method is entered and exited.
      *
@@ -137,6 +146,15 @@ public class CommonAspect {
             if (userBase == null && !validWhite(servletPath) && aopEnable) {
                 return new LjBaseResponse("token失效，请重新登录");
             }
+
+            //设置当前项目，team
+            if (request.getParameter("project_id") != null && StringUtils.isNotBlank(request.getParameter("project_id"))){
+                ctrlTool.projectRequired();
+            }
+            if ((request.getParameter("team_id") != null && StringUtils.isNotBlank(request.getParameter("team_id"))) || (request.getParameter("groupId") != null && StringUtils.isNotBlank(request.getParameter("groupId")))){
+                ctrlTool.teamRequired();
+            }
+
             Object result = joinPoint.proceed();
             if (log.isDebugEnabled()) {
                 log.debug("结束: {}.{}() 结果 = {}", joinPoint.getSignature().getDeclaringTypeName(),

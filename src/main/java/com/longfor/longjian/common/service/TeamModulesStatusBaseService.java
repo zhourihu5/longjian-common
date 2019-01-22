@@ -25,6 +25,7 @@ public class TeamModulesStatusBaseService {
      * @param teamId
      * @return
      */
+    @LFAssignDataSource("zhijian2")
     public TeamModulesStatusBase getByTeamId(Integer teamId) {
         Example example = new Example(TeamModulesStatusBase.class);
         example.createCriteria().andEqualTo("teamId", teamId);

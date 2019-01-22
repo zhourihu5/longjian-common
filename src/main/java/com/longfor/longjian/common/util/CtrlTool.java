@@ -213,13 +213,13 @@ public class CtrlTool {
 
     public void projectRequired() throws Exception {
         HttpServletRequest request = RequestContextHolderUtil.getRequest();
-        Object projectIdStr = request.getAttribute("project_id");
+        Object projectIdStr = request.getParameter("project_id");
         log.debug("Start to get ProjectId : " + projectIdStr);
         //pId, err := strconv.Atoi(projectIdStr) 字符串和数字转换
         if (projectIdStr == null || StringUtils.isBlank(projectIdStr.toString())) {
             throw new Exception("Fail to get projectId");
         }
-        int pid = (int) projectIdStr;
+        int pid = Integer.parseInt(projectIdStr.toString());
 
         ProjectBase project = projectBaseService.getByIdNoFoundErr(pid);
         if (project == null) {
@@ -243,6 +243,7 @@ public class CtrlTool {
             } else {
                 sessionInfo.setBaseInfo("cur_group", group);
                 sessionInfo.setBaseInfo("team_group", group);
+                groupId = group.getTeamId();
             }
         } else {
             sessionInfo.setBaseInfo("cur_group", team);
@@ -281,15 +282,15 @@ public class CtrlTool {
 
     public void teamRequired() throws Exception {
         HttpServletRequest request = RequestContextHolderUtil.getRequest();
-        Object teamIdStr = request.getAttribute("team_id");
+        Object teamIdStr = request.getParameter("team_id");
         if (teamIdStr == null || StringUtils.isBlank(teamIdStr.toString())){
-            teamIdStr = request.getAttribute("groupId");
+            teamIdStr = request.getParameter("groupId");
         }
         //teamId, err := strconv.Atoi(teamIdStr)字符串和数字转换
         if (teamIdStr == null || StringUtils.isBlank(teamIdStr.toString())){
             throw new Exception("Fail to get teamId");
         }
-        int teamId = (int)teamIdStr;
+        int teamId = Integer.parseInt(teamIdStr.toString());
 
         TeamBase team = teamBaseService.getTeamById(teamId);
         if (team == null) {
