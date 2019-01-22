@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by xiaochun on 2016/3/24.
  */
 public class TimeUtil {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         System.out.println("当前小时开始："+getCurrentHourStartTime().toString());
         System.out.println("当前小时结束："+getCurrentHourEndTime().toString());
@@ -29,7 +29,7 @@ public class TimeUtil {
         System.out.println("当前半年/后半年结束："+getHalfYearEndTime().toString());
         System.out.println("当前年开始："+getCurrentYearStartTime().toString());
         System.out.println("当前年结束："+getCurrentYearEndTime().toString());
-    }
+    }*/
 
     /**
      * 获取 当前年、半年、季度、月、日、小时 开始结束时间
