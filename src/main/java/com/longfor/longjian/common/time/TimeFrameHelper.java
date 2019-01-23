@@ -185,7 +185,7 @@ public class TimeFrameHelper {
         return result;
     }
 
-    public static void main(String []args) {
+   /* public static void main(String []args) {
 
         Date beginDate = DateUtil.stringToDate("2018-10-22 00:12:40");
         Date endDate1 = DateUtil.stringToDate("2019-12-20 00:12:40");
@@ -196,9 +196,9 @@ public class TimeFrameHelper {
             System.out.println(frame);
         }
 
-    }
+    }*/
 
-    public static void main1(String []args){
+   /* public static void main1(String []args){
 
         Date beginDate= DateUtil.stringToDate("2018-10-22 00:12:40");
         Date endDate1= DateUtil.stringToDate("2019-12-20 00:12:40");
@@ -236,7 +236,7 @@ public class TimeFrameHelper {
         }
 
 
-    }
+    }*/
 
 
 
