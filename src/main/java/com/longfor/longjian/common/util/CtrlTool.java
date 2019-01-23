@@ -227,6 +227,8 @@ public class CtrlTool {
             throw new Exception("Fail to get project");
         } else {
             sessionInfo.setBaseInfo("cur_proj", project);
+            //自己加的，源码没有
+            sessionInfo.setBaseInfo("projectId",project.getId());
         }
 
         TeamBase team = teamBaseService.getTeamById(project.getTeamId());
