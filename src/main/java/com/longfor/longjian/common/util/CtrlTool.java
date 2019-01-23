@@ -6,11 +6,8 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.commonEntity.TeamActiveModulesCommon;
 import com.longfor.longjian.common.consts.LoginEnum;
 import com.longfor.longjian.common.consts.YesNoEnum;
-import com.longfor.longjian.common.entity.ProjectBase;
-import com.longfor.longjian.common.entity.TeamBase;
+import com.longfor.longjian.common.entity.*;
 import com.longfor.longjian.common.commonEntity.TeamConfig;
-import com.longfor.longjian.common.entity.TeamModulesStatusBase;
-import com.longfor.longjian.common.entity.TeamSettingBase;
 import com.longfor.longjian.common.req.feignClientReq.ProjectPermissionReq;
 import com.longfor.longjian.common.req.feignClientReq.TeamPermissionReq;
 import com.longfor.longjian.common.service.ProjectBaseService;
@@ -57,14 +54,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void projPerm(HttpServletRequest request, String perm) throws Exception {
-//        proj = c.MustGet("cur_proj").(*models.Project)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer projId = 6;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_proj") == null){
+            throw new Exception("当前项目不存在");
+        }
+        ProjectBase proj = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        UserBase user = sessionInfo.getSessionUser();
 
         ProjectPermissionReq projectPermissionReq = new ProjectPermissionReq();
-        projectPermissionReq.setProj_id(projId);
-        projectPermissionReq.setUser_id(userId);
+        projectPermissionReq.setProj_id(proj.getId());
+        projectPermissionReq.setUser_id(user.getUserId());
         projectPermissionReq.setPer_title(perm);
 
         if (StringUtils.isNotBlank(perm)) {
@@ -93,14 +91,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void projPermMulti(HttpServletRequest request, String[] perms) throws Exception {
-//        proj = c.MustGet("cur_proj").(*models.Project)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer projId = 6;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_proj") == null){
+            throw new Exception("当前项目不存在");
+        }
+        ProjectBase proj = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        UserBase user = sessionInfo.getSessionUser();
 
         ProjectPermissionReq projectPermissionReq = new ProjectPermissionReq();
-        projectPermissionReq.setProj_id(projId);
-        projectPermissionReq.setUser_id(userId);
+        projectPermissionReq.setProj_id(proj.getId());
+        projectPermissionReq.setUser_id(user.getUserId());
 
         if (perms.length > 0) {
             Enum hasPer = YesNoEnum.No;
@@ -137,14 +136,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void teamPerm(HttpServletRequest request, String perm) throws Exception {
-//        team = c.MustGet("cur_team").(*zj3uc_models.Team)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer teamId = 5;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_team") == null){
+            throw new Exception("当前公司不存在");
+        }
+        TeamBase team = (TeamBase) sessionInfo.getBaseInfo("cur_team");
+        UserBase user = sessionInfo.getSessionUser();
 
         TeamPermissionReq teamPermissionReq = new TeamPermissionReq();
-        teamPermissionReq.setTeam_id(teamId);
-        teamPermissionReq.setUser_id(userId);
+        teamPermissionReq.setTeam_id(team.getTeamId());
+        teamPermissionReq.setUser_id(user.getUserId());
         teamPermissionReq.setPer_title(perm);
 
         if (StringUtils.isNotBlank(perm)) {
@@ -174,14 +174,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void teamPermMulti(HttpServletRequest request, String[] perms) throws Exception {
-//        team = c.MustGet("cur_team").(*zj3uc_models.Team)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer teamId = 5;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_team") == null){
+            throw new Exception("当前公司不存在");
+        }
+        TeamBase team = (TeamBase) sessionInfo.getBaseInfo("cur_team");
+        UserBase user = sessionInfo.getSessionUser();
 
         TeamPermissionReq teamPermissionReq = new TeamPermissionReq();
-        teamPermissionReq.setTeam_id(teamId);
-        teamPermissionReq.setUser_id(userId);
+        teamPermissionReq.setTeam_id(team.getTeamId());
+        teamPermissionReq.setUser_id(user.getUserId());
 
         if (perms.length > 0) {
             Enum hasPer = YesNoEnum.No;
