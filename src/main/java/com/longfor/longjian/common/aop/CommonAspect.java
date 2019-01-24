@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -149,10 +150,24 @@ public class CommonAspect {
 
             //设置当前项目，team
             if (request.getParameter("project_id") != null && StringUtils.isNotBlank(request.getParameter("project_id"))){
-                ctrlTool.projectRequired();
+                try{
+                    Integer.valueOf(request.getParameter("project_id"));
+                    ctrlTool.projectRequired();
+                }catch (Exception e){
+                    log.debug("project_id 不能转换成int类型");
+                }
             }
             if ((request.getParameter("team_id") != null && StringUtils.isNotBlank(request.getParameter("team_id"))) || (request.getParameter("groupId") != null && StringUtils.isNotBlank(request.getParameter("groupId")))){
-                ctrlTool.teamRequired();
+                try{
+                    if ((request.getParameter("team_id") != null)){
+                        Integer.valueOf(request.getParameter("team_id"));
+                    }else{
+                        Integer.valueOf(request.getParameter("groupId"));
+                    }
+                    ctrlTool.teamRequired();
+                }catch (Exception e){
+                    log.debug("team_id 或 groupId不能转换成int类型");
+                }
             }
 
             Object result = joinPoint.proceed();
