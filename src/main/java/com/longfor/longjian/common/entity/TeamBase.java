@@ -2,7 +2,7 @@ package com.longfor.longjian.common.entity;
 
 import java.util.Date;
 import javax.persistence.*;
-
+@Table(name = "team")
 public class TeamBase {
     @Id
     @Column(name = "team_id")

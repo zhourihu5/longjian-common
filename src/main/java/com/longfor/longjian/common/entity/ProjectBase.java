@@ -3,8 +3,10 @@ package com.longfor.longjian.common.entity;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
+@Table(name = "project")
 public class ProjectBase {
     @Id
     @GeneratedValue(generator = "JDBC")

@@ -6,11 +6,9 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.commonEntity.TeamActiveModulesCommon;
 import com.longfor.longjian.common.consts.LoginEnum;
 import com.longfor.longjian.common.consts.YesNoEnum;
-import com.longfor.longjian.common.entity.ProjectBase;
-import com.longfor.longjian.common.entity.TeamBase;
+import com.longfor.longjian.common.entity.*;
 import com.longfor.longjian.common.commonEntity.TeamConfig;
-import com.longfor.longjian.common.entity.TeamModulesStatusBase;
-import com.longfor.longjian.common.entity.TeamSettingBase;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.req.feignClientReq.ProjectPermissionReq;
 import com.longfor.longjian.common.req.feignClientReq.TeamPermissionReq;
 import com.longfor.longjian.common.service.ProjectBaseService;
@@ -57,14 +55,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void projPerm(HttpServletRequest request, String perm) throws Exception {
-//        proj = c.MustGet("cur_proj").(*models.Project)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer projId = 6;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_proj") == null){
+            throw new LjBaseRuntimeException(-9999,"当前项目不存在");
+        }
+        ProjectBase proj = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        UserBase user = sessionInfo.getSessionUser();
 
         ProjectPermissionReq projectPermissionReq = new ProjectPermissionReq();
-        projectPermissionReq.setProj_id(projId);
-        projectPermissionReq.setUser_id(userId);
+        projectPermissionReq.setProj_id(proj.getId());
+        projectPermissionReq.setUser_id(user.getUserId());
         projectPermissionReq.setPer_title(perm);
 
         if (StringUtils.isNotBlank(perm)) {
@@ -76,11 +75,11 @@ public class CtrlTool {
                 if (!YesNoEnum.Yes.equals(hasPer)) {
                     String err = LoginEnum.NO_PERMISSION.getName() + "--" + perm;
                     log.warn(err);
-                    throw new Exception(err);
+                    throw new LjBaseRuntimeException(-9999,err);
                 }
             } catch (Exception e) {
                 log.warn(e + "");
-                throw e;
+                throw new LjBaseRuntimeException(-9999,e.getMessage());
             }
         }
     }
@@ -93,14 +92,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void projPermMulti(HttpServletRequest request, String[] perms) throws Exception {
-//        proj = c.MustGet("cur_proj").(*models.Project)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer projId = 6;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_proj") == null){
+            throw new LjBaseRuntimeException(-9999,"当前项目不存在");
+        }
+        ProjectBase proj = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        UserBase user = sessionInfo.getSessionUser();
 
         ProjectPermissionReq projectPermissionReq = new ProjectPermissionReq();
-        projectPermissionReq.setProj_id(projId);
-        projectPermissionReq.setUser_id(userId);
+        projectPermissionReq.setProj_id(proj.getId());
+        projectPermissionReq.setUser_id(user.getUserId());
 
         if (perms.length > 0) {
             Enum hasPer = YesNoEnum.No;
@@ -116,16 +116,16 @@ public class CtrlTool {
                     }
                 } catch (Exception e) {
                     log.warn(e + "");
-                    throw e;
+                    throw new LjBaseRuntimeException(-9999,e.getMessage());
                 }
             }
             if (!YesNoEnum.Yes.equals(hasPer)) {
                 String err = LoginEnum.NO_PERMISSION.getName() + "--" + String.join("或", perms);
                 log.warn(err);
-                throw new Exception(err);
+                throw new LjBaseRuntimeException(-9999,err);
             }
         } else {
-            throw new Exception("perms 不能为空");
+            throw new LjBaseRuntimeException(-9999,"perms 不能为空");
         }
     }
 
@@ -137,14 +137,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void teamPerm(HttpServletRequest request, String perm) throws Exception {
-//        team = c.MustGet("cur_team").(*zj3uc_models.Team)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer teamId = 5;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_team") == null){
+            throw new LjBaseRuntimeException(-9999,"当前公司不存在");
+        }
+        TeamBase team = (TeamBase) sessionInfo.getBaseInfo("cur_team");
+        UserBase user = sessionInfo.getSessionUser();
 
         TeamPermissionReq teamPermissionReq = new TeamPermissionReq();
-        teamPermissionReq.setTeam_id(teamId);
-        teamPermissionReq.setUser_id(userId);
+        teamPermissionReq.setTeam_id(team.getTeamId());
+        teamPermissionReq.setUser_id(user.getUserId());
         teamPermissionReq.setPer_title(perm);
 
         if (StringUtils.isNotBlank(perm)) {
@@ -156,11 +157,11 @@ public class CtrlTool {
                 if (!YesNoEnum.Yes.equals(hasPer)) {
                     String err = LoginEnum.NO_PERMISSION.getName() + "--" + perm;
                     log.warn(err);
-                    throw new Exception(err);
+                    throw new LjBaseRuntimeException(-9999,err);
                 }
             } catch (Exception e) {
                 log.warn(e + "");
-                throw e;
+                throw new LjBaseRuntimeException(-9999,e.getMessage());
             }
         }
     }
@@ -174,14 +175,15 @@ public class CtrlTool {
      * @throws Exception
      */
     public void teamPermMulti(HttpServletRequest request, String[] perms) throws Exception {
-//        team = c.MustGet("cur_team").(*zj3uc_models.Team)
-//        user = c.MustGet("user").(*zj3uc_models.User) todo
-        Integer teamId = 5;
-        Integer userId = 7556;
+        if (sessionInfo.getBaseInfo("cur_team") == null){
+            throw new LjBaseRuntimeException(-9999,"当前公司不存在");
+        }
+        TeamBase team = (TeamBase) sessionInfo.getBaseInfo("cur_team");
+        UserBase user = sessionInfo.getSessionUser();
 
         TeamPermissionReq teamPermissionReq = new TeamPermissionReq();
-        teamPermissionReq.setTeam_id(teamId);
-        teamPermissionReq.setUser_id(userId);
+        teamPermissionReq.setTeam_id(team.getTeamId());
+        teamPermissionReq.setUser_id(user.getUserId());
 
         if (perms.length > 0) {
             Enum hasPer = YesNoEnum.No;
@@ -197,40 +199,42 @@ public class CtrlTool {
                     }
                 } catch (Exception e) {
                     log.warn(e + "");
-                    throw e;
+                    throw new LjBaseRuntimeException(-9999,e.getMessage());
                 }
             }
             if (!YesNoEnum.Yes.equals(hasPer)) {
                 String err = LoginEnum.NO_PERMISSION.getName() + "--" + String.join("或", perms);
                 log.warn(err);
-                throw new Exception(err);
+                throw new LjBaseRuntimeException(-9999,err);
             }
         } else {
-            throw new Exception("perms 不能为空");
+            throw new LjBaseRuntimeException(-9999,"perms 不能为空");
         }
     }
 
 
     public void projectRequired() throws Exception {
         HttpServletRequest request = RequestContextHolderUtil.getRequest();
-        Object projectIdStr = request.getAttribute("project_id");
+        Object projectIdStr = request.getParameter("project_id");
         log.debug("Start to get ProjectId : " + projectIdStr);
         //pId, err := strconv.Atoi(projectIdStr) 字符串和数字转换
         if (projectIdStr == null || StringUtils.isBlank(projectIdStr.toString())) {
-            throw new Exception("Fail to get projectId");
+            throw new LjBaseRuntimeException(-9999,"Fail to get projectId");
         }
-        int pid = (int) projectIdStr;
+        int pid = Integer.parseInt(projectIdStr.toString());
 
         ProjectBase project = projectBaseService.getByIdNoFoundErr(pid);
         if (project == null) {
-            throw new Exception("Fail to get project");
+            throw new LjBaseRuntimeException(-9999,"Fail to get project");
         } else {
             sessionInfo.setBaseInfo("cur_proj", project);
+            //自己加的，源码没有
+            sessionInfo.setBaseInfo("projectId",project.getId());
         }
 
         TeamBase team = teamBaseService.getTeamById(project.getTeamId());
         if (team == null) {
-            throw new Exception("Fail to get team");
+            throw new LjBaseRuntimeException(-9999,"Fail to get team");
         } else {
             sessionInfo.setBaseInfo("cur_team", team);
         }
@@ -239,10 +243,11 @@ public class CtrlTool {
         if (team.getParentTeamId() > 0) {
             TeamBase group = teamBaseService.getTeamById(team.getParentTeamId());
             if (group == null) {
-                throw new Exception("Fail to get group");
+                throw new LjBaseRuntimeException(-9999,"Fail to get group");
             } else {
                 sessionInfo.setBaseInfo("cur_group", group);
                 sessionInfo.setBaseInfo("team_group", group);
+                groupId = group.getTeamId();
             }
         } else {
             sessionInfo.setBaseInfo("cur_group", team);
@@ -256,7 +261,7 @@ public class CtrlTool {
 
         List<TeamSettingBase> settings = teamSettingBaseService.getTeamSettingsByTeamId(groupId);
         if (settings == null || settings.size() <= 0) {
-            throw new Exception("Fail to get teamSettings");
+            throw new LjBaseRuntimeException(-9999,"Fail to get teamSettings");
         }
         settings.forEach(c -> {
             switch (c.getKey()) {
@@ -281,19 +286,19 @@ public class CtrlTool {
 
     public void teamRequired() throws Exception {
         HttpServletRequest request = RequestContextHolderUtil.getRequest();
-        Object teamIdStr = request.getAttribute("team_id");
+        Object teamIdStr = request.getParameter("team_id");
         if (teamIdStr == null || StringUtils.isBlank(teamIdStr.toString())){
-            teamIdStr = request.getAttribute("groupId");
+            teamIdStr = request.getParameter("groupId");
         }
         //teamId, err := strconv.Atoi(teamIdStr)字符串和数字转换
         if (teamIdStr == null || StringUtils.isBlank(teamIdStr.toString())){
-            throw new Exception("Fail to get teamId");
+            throw new LjBaseRuntimeException(-9999,"Fail to get teamId");
         }
-        int teamId = (int)teamIdStr;
+        int teamId = Integer.parseInt(teamIdStr.toString());
 
         TeamBase team = teamBaseService.getTeamById(teamId);
         if (team == null) {
-            throw new Exception("Fail to get team");
+            throw new LjBaseRuntimeException(-9999,"Fail to get team");
         }
 //        else {
 //            sessionInfo.setBaseInfo("cur_team", team);
@@ -302,7 +307,7 @@ public class CtrlTool {
         if (team.getParentTeamId() > 0){
             teamGroup = teamBaseService.getTeamById(team.getParentTeamId());
             if (teamGroup == null) {
-                throw new Exception("Fail to get group");
+                throw new LjBaseRuntimeException(-9999,"Fail to get group");
             }
         }
 
@@ -313,7 +318,7 @@ public class CtrlTool {
 
         List<TeamSettingBase> settings = teamSettingBaseService.getTeamSettingsByTeamId(teamGroup.getTeamId());
         if (settings == null || settings.size() <= 0) {
-            throw new Exception("Fail to get teamSettings");
+            throw new LjBaseRuntimeException(-9999,"Fail to get teamSettings");
         }
         settings.forEach(c -> {
             switch (c.getKey()) {

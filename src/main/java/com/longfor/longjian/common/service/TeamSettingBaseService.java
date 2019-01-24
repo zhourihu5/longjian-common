@@ -1,5 +1,6 @@
 package com.longfor.longjian.common.service;
 
+import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.common.dao.TeamSettingBaseMapper;
 import com.longfor.longjian.common.entity.TeamBase;
 import com.longfor.longjian.common.entity.TeamSettingBase;
@@ -18,6 +19,7 @@ public class TeamSettingBaseService {
     @Resource
     private TeamSettingBaseMapper teamSettingBaseMapper;
 
+    @LFAssignDataSource("zhijian2_apisvr")
     public List<TeamSettingBase> getTeamSettingsByTeamId(int groupId) {
         Example example = new Example(TeamBase.class);
         Example.Criteria criteria = example.createCriteria();

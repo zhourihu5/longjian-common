@@ -1,5 +1,6 @@
 package com.longfor.longjian.common.service;
 
+import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.common.dao.ProjectBaseMapper;
 import com.longfor.longjian.common.entity.ProjectBase;
 import com.longfor.longjian.common.util.ExampleUtil;
@@ -16,6 +17,7 @@ public class ProjectBaseService {
     @Resource
     private ProjectBaseMapper projectBaseMapper;
 
+    @LFAssignDataSource("zhijian2")
     public ProjectBase getByIdNoFoundErr(int pid) {
         Example example = new Example(ProjectBase.class);
         Example.Criteria criteria = example.createCriteria();
