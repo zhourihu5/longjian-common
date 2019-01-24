@@ -75,4 +75,39 @@ public class StringUtil {
         return strToInts(str, ",");
     }
 
+    /**
+     * 将字符串中的中文转成Unicode
+     *
+     * @param cn
+     * @return
+     */
+    public static String cnToUnicode(String cn) {
+        char[] chars = cn.toCharArray();
+        StringBuilder returnStr = new StringBuilder();
+        for (char aChar : chars) {
+            if (isChinese(aChar)) {
+                returnStr.append("\\u").append(Integer.toString(aChar, 16));
+            } else {
+                returnStr.append(aChar);
+            }
+        }
+        return returnStr.toString();
+    }
+
+    /**
+     * 判定输入的是否是汉字
+     *
+     * @param c
+     * @return
+     */
+    private static boolean isChinese(char c) {
+        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+        return ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+                || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS;
+    }
+
 }
