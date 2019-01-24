@@ -33,6 +33,10 @@ public class TimeFrameHelper {
 
 
     /**
+     *  使用方式，
+     *  （1）type 非空 + maxCount + beginDate非空 + endDate为空 => 以beginDate起始， 向明天数maxCount个周期
+     *  （2）type 非空 + maxCount + beginDate非空 + endDate非空 =>  以endDate起始， 向过去数maxCount个周期
+     *
      *
      * @param type
      * @param maxCount
