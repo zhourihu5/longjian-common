@@ -192,7 +192,6 @@ public class TimeFrameHelper {
         return result;
     }
 
-
    public static void main(String []args) {
 
        testNoType();
@@ -285,39 +284,29 @@ public class TimeFrameHelper {
         Date beginDate= DateUtil.stringToDate("2018-10-22 00:12:40");
         Date endDate1= DateUtil.stringToDate("2019-12-20 00:12:40");
 
-        System.out.println(beginDate);
         List<TimeFrame> frames =  produceFrames(TimeType.WEEK.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
-       frames =  produceFrames(TimeType.MONTH.getValue(), 10, beginDate, endDate1, true );
-
+        frames =  produceFrames(TimeType.MONTH.getValue(), 10, beginDate, endDate1, true );
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
         frames =  produceFrames(TimeType.YEAR.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
         frames =  produceFrames(TimeType.QUARTER.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
         frames =  produceFrames(TimeType.DAY.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
     }
-
-
-
-
 }
