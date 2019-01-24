@@ -5,6 +5,7 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -75,11 +76,17 @@ public class TimeFrameHelper {
             maxCount =1;
         }
 
+        List<TimeFrame> frames = null;
        if(StringUtils.isNoneEmpty(type)){
-           return produceFramesWithType(type, maxCount, beginDate, endDate, limitScope);
+           frames = produceFramesWithType(type, maxCount, beginDate, endDate, limitScope);
        }else{
-           return produceFramesNonType(maxCount,beginDate,endDate,limitScope);
+           frames= produceFramesNonType(maxCount,beginDate,endDate,limitScope);
        }
+
+
+
+        return frames;
+
     }
 
 
@@ -151,6 +158,11 @@ public class TimeFrameHelper {
             }
             result.add(frame);
         }
+
+        if(isBackward){
+            Collections.reverse(result);
+        }
+
         return result;
     }
 
