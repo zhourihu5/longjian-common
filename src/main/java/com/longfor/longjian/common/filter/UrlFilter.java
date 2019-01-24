@@ -51,6 +51,8 @@ public class UrlFilter implements Filter {
 //            chain.doFilter(request, response);
 //
 //        }
+        System.out.println("user.dir:" + System.getProperty("user.dir"));
+        System.out.println("resource:" + Thread.currentThread().getContextClassLoader().getResource("").toString());
         if (!aimEnable) {
             request.setAttribute("noNeedFilter", "false");
         }
