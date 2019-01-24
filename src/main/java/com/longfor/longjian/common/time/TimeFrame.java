@@ -24,7 +24,7 @@ public class TimeFrame {
     private String type;
     private Date day;
     private int year;
-    private Date begiOn;
+    private Date beginOn;
     private Date endOn;
     private Date nextMonth;
     /**
@@ -63,17 +63,25 @@ public class TimeFrame {
             calendar.setFirstDayOfWeek(Calendar.MONDAY);
             calendar.setTimeInMillis(day.getTime());
 
+            /**
+             * DAY_OF_WEEK -1 为周几
+             * 当前是周几 - 周几数值 + 1 即为周一
+             */
             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-1;
-            calendar.add(Calendar.DATE, -(dayOfWeek-1));
-            this.begiOn = calendar.getTime();
+            if( dayOfWeek == 0){
+                dayOfWeek = 7;
+            }
+            calendar.add(Calendar.DATE, - dayOfWeek+1);
+            this.beginOn = calendar.getTime();
             this.year = calendar.get(Calendar.YEAR);
             this.idx = calendar.get(Calendar.WEEK_OF_YEAR);
 
+            //周一+6天， 即为周日
             calendar.add(Calendar.DATE,  6 );
             this.endOn = calendar.getTime();
 
             System.out.println("this.day:" + format.format(day)+",周" + dayOfWeek +",weekInYear:" + idx
-                    +",beginOn:" + format.format(begiOn) +",endOn:" + format.format(endOn));
+                    +",beginOn:" + format.format(beginOn) +",endOn:" + format.format(endOn));
 
 
 
@@ -83,7 +91,7 @@ public class TimeFrame {
             calendar.setTimeInMillis(day.getTime());
             // 时间改为当前月的第一天
             calendar.set(Calendar.DAY_OF_MONTH, 1);
-            this.begiOn = calendar.getTime();
+            this.beginOn = calendar.getTime();
             this.year = calendar.get(Calendar.YEAR);
 
             //当前月再加1个月即，即为下一个月，再-1天，即为上个月的最后一天
@@ -116,7 +124,7 @@ public class TimeFrame {
                 this.idx = 4;
             }
             calendar.set(Calendar.DATE, 1);
-            this.begiOn = calendar.getTime();
+            this.beginOn = calendar.getTime();
 
             // 求季度最后时间
             calendar.setTimeInMillis(day.getTime());
@@ -148,7 +156,7 @@ public class TimeFrame {
             calendar.setTimeInMillis(day.getTime());
             calendar.set(Calendar.MONTH, 0);
             calendar.set(Calendar.DATE, 1);
-            this.begiOn = calendar.getTime();
+            this.beginOn = calendar.getTime();
             this.year = calendar.get(Calendar.YEAR);
 
             calendar.set(Calendar.MONTH, 11);
@@ -161,7 +169,7 @@ public class TimeFrame {
 
             this.idx = calendar.get(Calendar.DAY_OF_YEAR);
             this.year = calendar.get(Calendar.YEAR);
-            this.begiOn = this.day;
+            this.beginOn = this.day;
             this.endOn = this.day;
         }
 
@@ -189,7 +197,7 @@ public class TimeFrame {
     public TimeFrame prev(){
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(this.begiOn);
+        calendar.setTime(this.beginOn);
         calendar.add(Calendar.DATE, -1);
 
         Date preDay = calendar.getTime();
@@ -210,8 +218,8 @@ public class TimeFrame {
         }
 
         if(isBackward){
-            if (this.day.after(this.begiOn)){
-                this.begiOn = limitDay;
+            if (this.day.after(this.beginOn)){
+                this.beginOn = limitDay;
             }
         }else{
             if(this.day.before( this.endOn)){
@@ -224,7 +232,7 @@ public class TimeFrame {
     public String toString() {
 
         String stringFormat = "<%s: [%d,%d] %s - %s>";
-        return String.format(stringFormat, this.type.toUpperCase(), this.year, this.idx, format.format(begiOn),
+        return String.format(stringFormat, this.type.toUpperCase(), this.year, this.idx, format.format(beginOn),
                 format.format(endOn));
     }
 

@@ -116,7 +116,7 @@ public class TimeFrameHelper {
 
             if (tmpEnd !=null){
                 if(isBackward){
-                    if( !frame.getBegiOn().after(tmpEnd) ){
+                    if( !frame.getBeginOn().after(tmpEnd) ){
                         if(limitScope){
                             frame.limit(isBackward, tmpEnd);
                         }
@@ -171,11 +171,11 @@ public class TimeFrameHelper {
                 TimeFrame frame = new TimeFrame(type, tmpBegin);
 
                 if(TimeType.WEEK.getValue().equalsIgnoreCase(type)
-                        && frame.getBegiOn().getMonth()!=frame.getEndOn().getMonth()){
+                        && frame.getBeginOn().getMonth()!=frame.getEndOn().getMonth()){
                     continue;
                 }
 
-                if(frame.getBegiOn().equals(tmpBegin) && !frame.getEndOn().after(tmpEnd)){
+                if(frame.getBeginOn().equals(tmpBegin) && !frame.getEndOn().after(tmpEnd)){
                     result.add(frame);
                     tmpEnd = DateUtil.nextDate(frame.getEndOn());
                 }
@@ -185,12 +185,12 @@ public class TimeFrameHelper {
         return result;
     }
 
-    public static void main(String []args) {
+    public static void main1(String []args) {
 
         Date beginDate = DateUtil.stringToDate("2018-10-22 00:12:40");
-        Date endDate1 = DateUtil.stringToDate("2019-12-20 00:12:40");
+        Date endDate1 = DateUtil.stringToDate("2019-01-24 00:12:40");
 
-        List<TimeFrame> frames = produceFrames(TimeType.WEEK.getValue(), 20, beginDate, null, true);
+        List<TimeFrame> frames = produceFrames(TimeType.WEEK.getValue(), 5, beginDate, endDate1, true);
 
         for (TimeFrame frame : frames) {
             System.out.println(frame);
@@ -198,12 +198,13 @@ public class TimeFrameHelper {
 
     }
 
-    public static void main1(String []args){
+    public static void main(String []args){
 
         Date beginDate= DateUtil.stringToDate("2018-10-22 00:12:40");
         Date endDate1= DateUtil.stringToDate("2019-12-20 00:12:40");
 
-        List<TimeFrame> frames =  produceFrames(TimeType.WEEK.getValue(), 20, beginDate, endDate1, true );
+        System.out.println(beginDate);
+        List<TimeFrame> frames =  produceFrames(TimeType.WEEK.getValue(), 10, beginDate, endDate1, true );
 
         for(TimeFrame frame : frames){
             System.out.println(frame);
