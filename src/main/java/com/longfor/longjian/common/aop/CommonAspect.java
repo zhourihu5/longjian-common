@@ -42,11 +42,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 
  * @author chi.zhang
- * @create 2018/6/9 下午5:24
- *
  * @version v1.0
+ * @create 2018/6/9 下午5:24
  **/
 @Aspect
 @Configuration
@@ -90,30 +88,32 @@ public class CommonAspect {
      * Pointcut that matches all repositories, services and Web REST endpoints.
      */
     @Pointcut("within(@org.springframework.stereotype.Service *)" +
-        " || within(@org.springframework.web.bind.annotation.RestController *)")
-    public void springBeanPointcut() {}
+            " || within(@org.springframework.web.bind.annotation.RestController *)")
+    public void springBeanPointcut() {
+    }
 
     /**
      * Pointcut that matches all Spring beans in the application's main packages.
      */
     @Pointcut("within(com.longfor.longjian..app.controller..*)")
-    public void applicationPackagePointcut() {}
+    public void applicationPackagePointcut() {
+    }
 
     /**
      * Advice that logs methods throwing exceptions.
      *
      * @param joinPoint join point for advice
-     * @param e exception
+     * @param e         exception
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void afterThrowing(JoinPoint joinPoint, Throwable e) {
         if (env.acceptsProfiles(DragonShardConstants.SPRING_PROFILE_DEVELOPMENT)) {
             log.error("异常: {}.{}() 原因 = \'{}\' 信息 = \'{}\'", joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), e.getCause() != null? e.getCause() : "NULL", e.getMessage(), e);
+                    joinPoint.getSignature().getName(), e.getCause() != null ? e.getCause() : "NULL", e.getMessage(), e);
 
         } else {
             log.error("异常: {}.{}() 原因 = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), e.getCause() != null? e.getCause() : "NULL");
+                    joinPoint.getSignature().getName(), e.getCause() != null ? e.getCause() : "NULL");
         }
     }
 
@@ -131,7 +131,7 @@ public class CommonAspect {
 //        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         if (log.isDebugEnabled()) {
             log.debug("开始: {}.{}() 参数 = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), paramStr(joinPoint.getArgs()));
+                    joinPoint.getSignature().getName(), paramStr(joinPoint.getArgs()));
         }
         String servletPath = request.getServletPath();
         String pathInfo = request.getPathInfo();
@@ -139,52 +139,58 @@ public class CommonAspect {
             servletPath = servletPath + pathInfo;
         }
 
-        if(StringUtils.isEmpty(servletPath)){
-            servletPath=request.getRequestURI();
+        if (StringUtils.isEmpty(servletPath)) {
+            servletPath = request.getRequestURI();
         }
         try {
             UserBase userBase = sessionInfo.getSessionUser();
             if (userBase == null && !validWhite(servletPath) && aopEnable) {
-                return new LjBaseResponse("token失效，请重新登录");
+                return new LjBaseResponse<>(401, 1, null, "token失效，请重新登录");
             }
 
             //设置当前项目，team
-            if (request.getParameter("project_id") != null && StringUtils.isNotBlank(request.getParameter("project_id"))){
-                try{
-                    Integer.valueOf(request.getParameter("project_id"));
-                    ctrlTool.projectRequired();
-                }catch (Exception e){
-                    log.debug("project_id 不能转换成int类型");
-                }
-            }
-            if ((request.getParameter("team_id") != null && StringUtils.isNotBlank(request.getParameter("team_id"))) || (request.getParameter("groupId") != null && StringUtils.isNotBlank(request.getParameter("groupId")))){
-                try{
-                    if ((request.getParameter("team_id") != null)){
-                        Integer.valueOf(request.getParameter("team_id"));
-                    }else{
-                        Integer.valueOf(request.getParameter("groupId"));
-                    }
-                    ctrlTool.teamRequired();
-                }catch (Exception e){
-                    log.debug("team_id 或 groupId不能转换成int类型");
-                }
-            }
+            setProjTeamGroupId(request);
 
             Object result = joinPoint.proceed();
             if (log.isDebugEnabled()) {
                 log.debug("结束: {}.{}() 结果 = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(), result);
+                        joinPoint.getSignature().getName(), result);
             }
             return result;
         } catch (Exception e) {
             log.error("参数异常: {} in {}.{}()", paramStr(joinPoint.getArgs()),
-                joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e);
-            if (e instanceof CommonException ||
-                    e instanceof CommonRuntimeException ||
-                    e instanceof LjBaseRuntimeException) {
-                throw e;
+                    joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e);
+//            if (e instanceof CommonException ||
+//                    e instanceof CommonRuntimeException ||
+//                    e instanceof LjBaseRuntimeException) {
+//                return new LjBaseResponse<>(1, 1, e.getMessage());
+////                throw e;
+//            }
+            return new LjBaseResponse<>(1, 1, null, e.getMessage());
+//            throw new CommonException("服务器错误，请联系管理员");
+        }
+    }
+
+    private void setProjTeamGroupId(HttpServletRequest request) {
+        if (request.getParameter("project_id") != null && StringUtils.isNotBlank(request.getParameter("project_id"))) {
+            try {
+                Integer.valueOf(request.getParameter("project_id"));
+                ctrlTool.projectRequired();
+            } catch (Exception e) {
+                log.debug("project_id 不能转换成int类型");
             }
-            throw new CommonException("服务器错误，请联系管理员");
+        }
+        if ((request.getParameter("team_id") != null && StringUtils.isNotBlank(request.getParameter("team_id"))) || (request.getParameter("groupId") != null && StringUtils.isNotBlank(request.getParameter("groupId")))) {
+            try {
+                if ((request.getParameter("team_id") != null)) {
+                    Integer.valueOf(request.getParameter("team_id"));
+                } else {
+                    Integer.valueOf(request.getParameter("groupId"));
+                }
+                ctrlTool.teamRequired();
+            } catch (Exception e) {
+                log.debug("team_id 或 groupId不能转换成int类型");
+            }
         }
     }
 

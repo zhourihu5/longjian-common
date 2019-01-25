@@ -80,8 +80,8 @@ public class TimeFrame {
             calendar.add(Calendar.DATE,  6 );
             this.endOn = calendar.getTime();
 
-            System.out.println("this.day:" + format.format(day)+",周" + dayOfWeek +",weekInYear:" + idx
-                    +",beginOn:" + format.format(beginOn) +",endOn:" + format.format(endOn));
+//            System.out.println("this.day:" + format.format(day)+",周" + dayOfWeek +",weekInYear:" + idx
+//                    +",beginOn:" + format.format(beginOn) +",endOn:" + format.format(endOn));
 
 
 

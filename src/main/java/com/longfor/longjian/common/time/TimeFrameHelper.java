@@ -5,6 +5,7 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -31,11 +32,14 @@ import java.util.List;
  */
 public class TimeFrameHelper {
 
-
     /**
-     *  使用方式，
-     *  （1）type 非空 + maxCount + beginDate非空 + endDate为空 => 以beginDate起始， 向明天数maxCount个周期
-     *  （2）type 非空 + maxCount + beginDate非空 + endDate非空 =>  以endDate起始， 向过去数maxCount个周期
+     *  使用方式，x
+     *  （1）type 非空 + maxCount >1 + beginDate非空 + endDate为空 => 以beginDate起始， 向明天数maxCount个周期
+     *   见下面样例：testEndDateIsNull()
+     *  （2）type 非空 + maxCount>1 + beginDate非空 + endDate非空 =>  以endDate起始， 向过去数maxCount个周期
+     *  见下面样例：testEndDateNotNull()
+     *  （3）type 非空 + maxCount=0 + beginDate非空 + endDate非空, 见样例：testMaxCountIs0()
+     *  （4）type为空，maxCount、beginDate和endDate非空：见样例：testNoType()
      *
      *
      * @param type
@@ -47,15 +51,16 @@ public class TimeFrameHelper {
      */
     public static List<TimeFrame> produceFrames(String type, int maxCount, Date beginDate, Date endDate, boolean limitScope){
 
-        type = type.toLowerCase();
-
         //type非空，且为(DAY, WEEK, MONTH, QUARTER, YEAR):
-        if(StringUtils.isNoneEmpty(type) && !TimeType.typeList.contains(type)){
-            throw new LjBaseRuntimeException(430,"type not one of (DAY, WEEK, MONTH, QUARTER, YEAR)");
+        if(StringUtils.isNoneEmpty(type)) {
+            type = type.toLowerCase();
+            if( !TimeType.typeList.contains(type)){
+                throw new LjBaseRuntimeException(430,"type not one of (DAY, WEEK, MONTH, QUARTER, YEAR)");
+            }
         }
 
         if (beginDate == null && endDate == null){
-            if(StringUtils.isEmpty(type) ){
+            if(StringUtils.isEmpty(type)){
                 throw new LjBaseRuntimeException(430,"beginOn and endOn can not both null when Type is null");
             }
             endDate = new Date();
@@ -71,11 +76,17 @@ public class TimeFrameHelper {
             maxCount =1;
         }
 
-       if( type!= null){
-           return produceFramesWithType(type, maxCount, beginDate, endDate, limitScope);
+        List<TimeFrame> frames = null;
+       if(StringUtils.isNoneEmpty(type)){
+           frames = produceFramesWithType(type, maxCount, beginDate, endDate, limitScope);
        }else{
-           return produceFramesNonType(maxCount,beginDate,endDate,limitScope);
+           frames= produceFramesNonType(maxCount,beginDate,endDate,limitScope);
        }
+
+
+
+        return frames;
+
     }
 
 
@@ -91,14 +102,12 @@ public class TimeFrameHelper {
      */
     private static List<TimeFrame> produceFramesWithType(String type, int maxCount, Date beginDate, Date endDate, boolean limitScope){
 
-
         boolean isBackward;
         if(endDate !=null){
             isBackward = true;
         }else{
             isBackward = false;
         }
-
 
         Date tmpBegin = beginDate;
         Date tmpEnd = endDate;
@@ -149,6 +158,11 @@ public class TimeFrameHelper {
             }
             result.add(frame);
         }
+
+        if(isBackward){
+            Collections.reverse(result);
+        }
+
         return result;
     }
 
@@ -175,13 +189,14 @@ public class TimeFrameHelper {
                 TimeFrame frame = new TimeFrame(type, tmpBegin);
 
                 if(TimeType.WEEK.getValue().equalsIgnoreCase(type)
-                        && frame.getBeginOn().getMonth()!=frame.getEndOn().getMonth()){
+                        && frame.getBeginOn().getMonth()!= frame.getEndOn().getMonth()){
                     continue;
                 }
 
                 if(frame.getBeginOn().equals(tmpBegin) && !frame.getEndOn().after(tmpEnd)){
                     result.add(frame);
-                    tmpEnd = DateUtil.nextDate(frame.getEndOn());
+                    tmpBegin = DateUtil.nextDate(frame.getEndOn());
+//                    System.out.println("nextDate -tmpBegin :" + TimeFrame.format.format(tmpBegin));
                 }
             }
         }
@@ -189,8 +204,61 @@ public class TimeFrameHelper {
         return result;
     }
 
+   public static void main1(String []args) {
 
-   /*public static void main(String []args) {
+       testNoType();
+       testEndDateIsNull();
+       testEndDateNotNull();
+       testMaxCountIs0();
+    }
+
+
+    /**
+     * testNoType
+     */
+    private static void testNoType() {
+
+        System.out.println("------- testNoType Begin: forward-------");
+
+        Date beginDate = DateUtil.stringToDate("2018-10-22 00:12:40");
+        Date endDate1 = DateUtil.stringToDate("2019-02-24 00:12:40");
+
+        List<TimeFrame> frames = produceFrames(null, 5, beginDate, endDate1, true);
+
+        for (TimeFrame frame : frames) {
+            System.out.println(frame);
+        }
+        System.out.println("------- testNoType End -------");
+
+    }
+
+
+    /**
+     * testEndDateIsNull
+     */
+    private static void testEndDateIsNull() {
+
+        System.out.println("------- testEndDateIsNull Begin: forward-------");
+
+        Date beginDate = DateUtil.stringToDate("2018-10-22 00:12:40");
+        Date endDate1 = DateUtil.stringToDate("2019-01-24 00:12:40");
+
+        List<TimeFrame> frames = produceFrames(TimeType.WEEK.getValue(), 5, beginDate, null, true);
+
+        for (TimeFrame frame : frames) {
+            System.out.println(frame);
+        }
+        System.out.println("------- testEndDateIsNull End -------");
+
+    }
+
+    /**
+     * testEndDateNotNull
+     */
+    private static void testEndDateNotNull() {
+
+        System.out.println("------- testEndDateNotNull: backward -------");
+
         Date beginDate = DateUtil.stringToDate("2018-10-22 00:12:40");
         Date endDate1 = DateUtil.stringToDate("2019-01-24 00:12:40");
 
@@ -199,47 +267,58 @@ public class TimeFrameHelper {
         for (TimeFrame frame : frames) {
             System.out.println(frame);
         }
+
+        System.out.println("------- testEndDateNotNull End -------");
     }
 
+    /**
+     * testMaxCountIs0
+     */
+    private static void testMaxCountIs0() {
 
-   public static void main1(String []args){
+        System.out.println("------- testMaxCountIs0 Begin -------");
+        Date beginDate = DateUtil.stringToDate("2018-10-22 00:12:40");
+        Date endDate1 = DateUtil.stringToDate("2019-01-24 00:12:40");
+
+        List<TimeFrame> frames = produceFrames(TimeType.WEEK.getValue(), 0, beginDate, endDate1, true);
+
+        for (TimeFrame frame : frames) {
+            System.out.println(frame);
+        }
+        System.out.println("------- testMaxCountIs0 End -------");
+    }
+
+    /**
+     * all
+     */
+   private static void all(){
 
         Date beginDate= DateUtil.stringToDate("2018-10-22 00:12:40");
         Date endDate1= DateUtil.stringToDate("2019-12-20 00:12:40");
 
-        System.out.println(beginDate);
         List<TimeFrame> frames =  produceFrames(TimeType.WEEK.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
-       frames =  produceFrames(TimeType.MONTH.getValue(), 10, beginDate, endDate1, true );
-
+        frames =  produceFrames(TimeType.MONTH.getValue(), 10, beginDate, endDate1, true );
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
         frames =  produceFrames(TimeType.YEAR.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
         frames =  produceFrames(TimeType.QUARTER.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
 
         frames =  produceFrames(TimeType.DAY.getValue(), 10, beginDate, endDate1, true );
-
         for(TimeFrame frame : frames){
             System.out.println(frame);
         }
-    }*/
-
-
-
-
+    }
 }
