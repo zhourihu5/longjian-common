@@ -38,9 +38,10 @@ public class LjBaseResponse<T> implements Serializable {
         this.data = data;
     }
 
-    public LjBaseResponse(int code, int result, String message) {
+    public LjBaseResponse(int code, int result, T data, String message) {
         this.code = code;
         this.result = result;
+        this.data = data;
         this.message = message;
     }
 

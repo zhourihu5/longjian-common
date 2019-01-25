@@ -145,7 +145,7 @@ public class CommonAspect {
         try {
             UserBase userBase = sessionInfo.getSessionUser();
             if (userBase == null && !validWhite(servletPath) && aopEnable) {
-                return new LjBaseResponse<>(401, 1, "token失效，请重新登录");
+                return new LjBaseResponse<>(401, 1, null, "token失效，请重新登录");
             }
 
             //设置当前项目，team
@@ -166,7 +166,7 @@ public class CommonAspect {
 //                return new LjBaseResponse<>(1, 1, e.getMessage());
 ////                throw e;
 //            }
-            return new LjBaseResponse<>(1, 1, e.getMessage());
+            return new LjBaseResponse<>(1, 1, null, e.getMessage());
 //            throw new CommonException("服务器错误，请联系管理员");
         }
     }
