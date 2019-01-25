@@ -1,8 +1,10 @@
 package com.longfor.longjian.common.util;
 
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +15,7 @@ import java.util.stream.Stream;
  *
  * @author zhouxingjia
  */
+@Slf4j
 public class StringUtil {
 
     public static List<Integer> strToInts(String str, String split) {
@@ -108,6 +111,33 @@ public class StringUtil {
                 || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
                 || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
                 || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS;
+    }
+
+
+    public List<Integer> splitToIdsSlash(String idsStr,boolean ignoreBlank){
+        return splitToIds(idsStr,"/",ignoreBlank);
+    }
+
+    public List<Integer> splitToIds(String idsStr, String sep, boolean ignoreBlank) {
+        List<Integer> ids = new ArrayList<>();
+        for (String idStr:idsStr.split(sep)
+             ) {
+            idsStr = idStr.trim();
+            if ("".equals(idsStr)){
+                continue;
+            }
+            try {
+                int id = Integer.parseInt(idsStr);
+                ids.add(id);
+            }catch (NumberFormatException e){
+                if (ignoreBlank){
+                    continue;
+                }
+                log.error("error1: "+ e.getMessage());
+                throw e;
+            }
+        }
+        return ids;
     }
 
 }
