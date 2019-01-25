@@ -114,11 +114,11 @@ public class StringUtil {
     }
 
 
-    public List<Integer> splitToIdsSlash(String idsStr,boolean ignoreBlank){
+    public static List<Integer> splitToIdsSlash(String idsStr,boolean ignoreBlank){
         return splitToIds(idsStr,"/",ignoreBlank);
     }
 
-    public List<Integer> splitToIds(String idsStr, String sep, boolean ignoreBlank) {
+    public static List<Integer> splitToIds(String idsStr, String sep, boolean ignoreBlank) {
         List<Integer> ids = new ArrayList<>();
         for (String idStr:idsStr.split(sep)
              ) {
