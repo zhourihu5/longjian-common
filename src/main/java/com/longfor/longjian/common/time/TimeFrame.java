@@ -19,7 +19,9 @@ import java.util.Date;
 public class TimeFrame {
 
 
-   public static final  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    public static final  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    public static final  SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
+
 
     private String type;
     private Date day;
@@ -32,6 +34,7 @@ public class TimeFrame {
      */
     private int idx;
     private String fmt ="%Y%m%d";
+    private String tableIdx;
 
     public TimeFrame(String type, Date day) {
 
@@ -78,12 +81,15 @@ public class TimeFrame {
 
             //周一+6天， 即为周日
             calendar.add(Calendar.DATE,  6 );
+            int yearEnd = calendar.get(Calendar.YEAR);
+            if(yearEnd!=this.year){
+                this.year = yearEnd;
+            }
+            this.tableIdx = "_" + this.year + "" + this.idx;
             this.endOn = calendar.getTime();
 
 //            System.out.println("this.day:" + format.format(day)+",周" + dayOfWeek +",weekInYear:" + idx
 //                    +",beginOn:" + format.format(beginOn) +",endOn:" + format.format(endOn));
-
-
 
         }else if(TimeType.MONTH.getValue().equalsIgnoreCase(this.type)){
 
@@ -99,6 +105,11 @@ public class TimeFrame {
             calendar.add(Calendar.DATE, -1);
             this.endOn = calendar.getTime();
             this.idx = calendar.get(Calendar.MONTH) +1;
+            if( this.idx < 10 ){
+                this.tableIdx = "_" + this.year + "0" + this.idx;
+            }else{
+                this.tableIdx = "_" + this.year + "" + this.idx;
+            }
 
         }else if(TimeType.QUARTER.getValue().equalsIgnoreCase(this.type)){
 
@@ -148,7 +159,7 @@ public class TimeFrame {
                 this.idx = 4;
             }
             this.endOn = calendar.getTime();
-
+            this.tableIdx = "_" + this.year + "" + this.idx;
 
         }else if(TimeType.YEAR.getValue().equalsIgnoreCase(this.type)){
 
@@ -162,6 +173,7 @@ public class TimeFrame {
             calendar.set(Calendar.MONTH, 11);
             calendar.set(Calendar.DATE, 31);
             this.endOn = calendar.getTime();
+            this.tableIdx = "_" + this.year + "" + this.idx;
         }else{
 
             Calendar calendar = Calendar.getInstance();
@@ -171,6 +183,7 @@ public class TimeFrame {
             this.year = calendar.get(Calendar.YEAR);
             this.beginOn = this.day;
             this.endOn = this.day;
+            this.tableIdx = "_" + format1.format(this.beginOn);
         }
 
     }
@@ -231,9 +244,9 @@ public class TimeFrame {
     @Override
     public String toString() {
 
-        String stringFormat = "<%s: [%d,%d] %s - %s>";
+        String stringFormat = "<%s: [%d,%d] %s - %s>, %s";
         return String.format(stringFormat, this.type.toUpperCase(), this.year, this.idx, format.format(beginOn),
-                format.format(endOn));
+                format.format(endOn), this.getTableIdx());
     }
 
 }

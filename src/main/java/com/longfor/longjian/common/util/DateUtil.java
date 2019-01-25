@@ -164,5 +164,20 @@ public class DateUtil {
         return calendar.getTime();
     }
 
+    /**
+     * 昨天的零点零分零秒
+     *
+     * @return
+     */
+    public static Date yesterdayZeroDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, -1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
 
 }
