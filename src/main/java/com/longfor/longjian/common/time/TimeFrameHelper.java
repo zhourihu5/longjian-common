@@ -204,7 +204,7 @@ public class TimeFrameHelper {
         return result;
     }
 
-   public static void main(String []args) {
+   public static void main1(String []args) {
 
        testNoType();
        testEndDateIsNull();
