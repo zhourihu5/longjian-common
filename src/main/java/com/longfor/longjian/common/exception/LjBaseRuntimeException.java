@@ -11,9 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Slf4j
-@AllArgsConstructor
 public class LjBaseRuntimeException extends RuntimeException{
-
+    
+    public LjBaseRuntimeException(Integer errorCode, String errorMsg) {
+        super(errorMsg);
+        this.errorCode = errorCode;
+        this.errorMsg = errorMsg;
+    }
+    
     private Integer errorCode;
     private String  errorMsg;
 }
