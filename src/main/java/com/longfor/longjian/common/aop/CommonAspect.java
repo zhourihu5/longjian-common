@@ -178,9 +178,9 @@ public class CommonAspect {
     }
 
     private void initNull(Object result) {
-        if (Objects.nonNull(result) && LjBaseResponse.class.isAssignableFrom(result.getClass())) {
-            InitClassAttr.init((LjBaseResponse) result);
-        }
+//        if (Objects.nonNull(result) && LjBaseResponse.class.isAssignableFrom(result.getClass())) {
+//            InitClassAttr.init((LjBaseResponse) result);
+//        }
     }
 
     private void setProjTeamGroupId(HttpServletRequest request) {

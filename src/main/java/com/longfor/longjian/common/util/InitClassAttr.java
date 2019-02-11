@@ -305,14 +305,14 @@ public class InitClassAttr {
         System.out.println(JSON.toJSONString(response.getData()));
     }
 
-    public static void main(String[] args) throws IllegalAccessException {
-//        demo();
-//        demo1();
-//        demo2();
-//        demo3();
-        System.out.println(new Date().getTime());
-        System.out.println(new Date(0L).getTime());
-    }
+//    public static void main(String[] args) throws IllegalAccessException {
+////        demo();
+////        demo1();
+////        demo2();
+////        demo3();
+//        System.out.println(new Date().getTime());
+//        System.out.println(new Date(0L).getTime());
+//    }
 
 }
 
