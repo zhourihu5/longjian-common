@@ -69,10 +69,16 @@ public class InitClassAttr {
                 Class cc;
                 if (Objects.isNull(item)) {
                     cc = nonNullObject.getClass();
+                    if (cc.isEnum()) {
+                        continue;
+                    }
                     list.set(i, getInit(cc));
                     continue;
                 } else {
                     cc = item.getClass();
+                }
+                if (cc.isEnum()) {
+                    continue;
                 }
                 Object initResult = initAttr(item, cc);
                 if (isBaseType(cc)) {
@@ -98,10 +104,16 @@ public class InitClassAttr {
                 Class cc;
                 if (Objects.isNull(v)) {
                     cc = nonNullObject.getClass();
+                    if (cc.isEnum()) {
+                        return;
+                    }
                     map.put(k, getInit(cc));
                     return;
                 } else {
                     cc = v.getClass();
+                }
+                if (cc.isEnum()) {
+                    return;
                 }
                 Object initResult = initAttr(v, cc);
                 if (isBaseType(cc)) {
@@ -305,13 +317,24 @@ public class InitClassAttr {
         System.out.println(JSON.toJSONString(response.getData()));
     }
 
+    private static void demo4() {
+        LjBaseResponse<Map> response = new LjBaseResponse<>();
+        Enum hasPer = Test.DISALLOWED;
+        Map data = Maps.newHashMap();
+        data.put("has_per",hasPer);
+        data.put("enum",new InitTest());
+        response.setData(data);
+        System.out.println(JSON.toJSONString(response.getData()));
+        InitClassAttr.init(response);
+        System.out.println(JSON.toJSONString(response.getData()));
+    }
+
 //    public static void main(String[] args) throws IllegalAccessException {
 ////        demo();
 ////        demo1();
 ////        demo2();
 ////        demo3();
-//        System.out.println(new Date().getTime());
-//        System.out.println(new Date(0L).getTime());
+//        demo4();
 //    }
 
 }
@@ -322,6 +345,7 @@ class InitTest {
     List<Integer> baseList;
     List<ListTest> listTest;
     Map<String, MapTest> mapTest;
+    Enum anEnum;
 }
 
 @Data
@@ -332,4 +356,17 @@ class ListTest {
 @Data
 class MapTest {
     Integer age;
+}
+
+enum Test {
+    ALLOWED("校验通过",1),
+    DISALLOWED("校验失败",0);
+
+    private String name;
+    private Integer value;
+
+    Test(String name, Integer value) {
+        this.name = name;
+        this.value = value;
+    }
 }
