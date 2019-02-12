@@ -131,7 +131,8 @@ public class InitClassAttr {
             Class clazzField = field.getType();
             try {
                 field.setAccessible(true);
-                if (Objects.isNull(field.get(object)) && isBaseType(clazzField)) {
+                if (isBaseType(clazzField)) {
+                    if (Objects.nonNull((field.get(object)))) continue;
                     initBaseType(field, clazzField, object);
                     continue;
                 }
@@ -274,99 +275,4 @@ public class InitClassAttr {
         return Map.class.isAssignableFrom(clazz);
     }
 
-    private static void demo() {
-        InitTest test = new InitTest();
-        ListTest list = new ListTest();
-        ListTest list2 = new ListTest();
-        test.listTest = Lists.newArrayList(list, list2);
-        MapTest map = new MapTest();
-        MapTest map1 = new MapTest();
-        test.mapTest = Maps.newHashMap();
-        test.mapTest.put("map", map);
-        test.mapTest.put("map1", map1);
-//        test.baseList = Lists.newArrayList(1, null);
-        LjBaseResponse<InitTest> response = new LjBaseResponse<>(test);
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo1() {
-        LjBaseResponse<InitTest> response = new LjBaseResponse<>(null);
-        System.out.println(JSON.toJSONString(response.getData()));
-        response.setDataClazz(3);
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo2() {
-        LjBaseResponse<List> response = new LjBaseResponse<>(Lists.newArrayList(1, null, Lists.newArrayList(1, null), Maps.newHashMap()));
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo3() {
-        LjBaseResponse<Map> response = new LjBaseResponse<>();
-        Map map = Maps.newHashMap();
-        map.put("a", null);
-        map.put("b", 1);
-        response.setData(map);
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo4() {
-        LjBaseResponse<Map> response = new LjBaseResponse<>();
-        Enum hasPer = Test.DISALLOWED;
-        Map data = Maps.newHashMap();
-        data.put("has_per",hasPer);
-        data.put("enum",new InitTest());
-        response.setData(data);
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-//    public static void main(String[] args) throws IllegalAccessException {
-////        demo();
-////        demo1();
-////        demo2();
-////        demo3();
-//        demo4();
-//    }
-
-}
-
-@Data
-class InitTest {
-    Integer sex;
-    List<Integer> baseList;
-    List<ListTest> listTest;
-    Map<String, MapTest> mapTest;
-    Enum anEnum;
-}
-
-@Data
-class ListTest {
-    String name;
-}
-
-@Data
-class MapTest {
-    Integer age;
-}
-
-enum Test {
-    ALLOWED("校验通过",1),
-    DISALLOWED("校验失败",0);
-
-    private String name;
-    private Integer value;
-
-    Test(String name, Integer value) {
-        this.name = name;
-        this.value = value;
-    }
 }
