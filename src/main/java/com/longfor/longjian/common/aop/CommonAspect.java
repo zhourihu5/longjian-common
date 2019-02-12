@@ -10,6 +10,7 @@ import com.longfor.longjian.common.exception.CommonRuntimeException;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.filter.UrlFilter;
 import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.InitClassAttr;
 import com.longfor.longjian.common.util.RequestContextHolderUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author chi.zhang
@@ -152,6 +154,10 @@ public class CommonAspect {
             setProjTeamGroupId(request);
 
             Object result = joinPoint.proceed();
+
+            //处理返回为null问题
+            initNull(result);
+
             if (log.isDebugEnabled()) {
                 log.debug("结束: {}.{}() 结果 = {}", joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName(), result);
@@ -168,6 +174,12 @@ public class CommonAspect {
 //            }
             return new LjBaseResponse<>(1, 1, null, e.getMessage());
 //            throw new CommonException("服务器错误，请联系管理员");
+        }
+    }
+
+    private void initNull(Object result) {
+        if (Objects.nonNull(result) && LjBaseResponse.class.isAssignableFrom(result.getClass())) {
+            InitClassAttr.init((LjBaseResponse) result);
         }
     }
 

@@ -64,6 +64,9 @@ public class SessionInfo {
     }
 
     public static String getToken() {
+        if (Objects.isNull(RequestContextHolder.getRequestAttributes())) {
+            return null;
+        }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         // PC端请求获取

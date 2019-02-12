@@ -20,6 +20,8 @@ public class LjBaseResponse<T> implements Serializable {
     private T data;
     private String message = "success";
     private long timestamp = System.currentTimeMillis() / 1000; // 符合原来的接口中的10位秒级时间戳
+    private int dataClazz = 1; // 1:字典，2:列表，3:基础类型
+    private Class<?> baseDateClazz; // 默认Integer，dataClazz为3是需指定
 
     public LjBaseResponse(int result, String message, T data) {
         this.result = result;
