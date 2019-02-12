@@ -2,6 +2,7 @@ package com.longfor.longjian.common.util;
 
 import com.longfor.gaia.gfs.data.redis.RedisKey;
 import com.longfor.longjian.common.entity.UserBase;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import java.util.UUID;
  * 目前只支持一个redis数据源，若使用多数据源需进行线程处理
  */
 @Component
+@Slf4j
 public class SessionInfo {
 
     private static String sessionPrefix;
@@ -74,6 +76,7 @@ public class SessionInfo {
             for (Cookie cookie : request.getCookies()) {
                 String name = cookie.getName();
                 if ("zjsess".equals(name)) {
+                    log.info("cookie获取token" + cookie.getValue());
                     return cookie.getValue();
                 }
             }
