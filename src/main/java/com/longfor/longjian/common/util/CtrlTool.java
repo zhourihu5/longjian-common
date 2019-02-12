@@ -267,10 +267,13 @@ public class CtrlTool {
             switch (c.getKey()) {
                 case "logo_url":
                     teamConfig.setLogoUrl(c.getValue());
+                    break;
                 case "company_name":
                     teamConfig.setCompangName(c.getValue());
+                    break;
                 case "system_name":
                     teamConfig.setSystemName(c.getValue());
+                    break;
                 default:
                     teamConfig.getRefusedAcceptBuildCause().add(c);
             }
@@ -324,10 +327,13 @@ public class CtrlTool {
             switch (c.getKey()) {
                 case "logo_url":
                     teamConfig.setLogoUrl(c.getValue());
+                    break;
                 case "company_name":
                     teamConfig.setCompangName(c.getValue());
+                    break;
                 case "system_name":
                     teamConfig.setSystemName(c.getValue());
+                    break;
                 default:
                     teamConfig.getRefusedAcceptBuildCause().add(c);
             }
