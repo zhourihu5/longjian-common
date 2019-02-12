@@ -1,6 +1,7 @@
 package com.longfor.longjian.common.filter;
 
 import com.longfor.longjian.common.util.SessionInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * Created by qhong on 2018/5/16 13:27
  **/
 @Component
+@Slf4j
 public class UrlFilter implements Filter {
 
     private static Boolean aimEnable;
@@ -58,11 +60,13 @@ public class UrlFilter implements Filter {
         }
         System.out.println("请求路径：" + path);
         String token = httpRequest.getParameter("token");
+        log.info("Parameter获取token" + token);
         if (StringUtils.isNotBlank(token)) {
             request.setAttribute("noNeedFilter", "false");
             request.setAttribute("token", token);
         }
         token = httpRequest.getHeader("token");
+        log.info("Header获取token" + token);
         if (StringUtils.isNotBlank(token)) {
             request.setAttribute("noNeedFilter", "false");
             request.setAttribute("token", token);
