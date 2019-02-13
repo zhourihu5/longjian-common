@@ -16,6 +16,7 @@ public class InitClassAttr {
     private final static String LONGJIAN_PACKAGE = "com.longfor.longjian";
 
     public static void init(LjBaseResponse res) {
+        log.warn("需处理的返回结果：{}", JSON.toJSONString(res));
         if (Objects.isNull(res.getData())) {
             if (res.getDataClazz() == 1) {
                 res.setData(Maps.newHashMap());
@@ -184,22 +185,22 @@ public class InitClassAttr {
             field.set(object, 0);
         }
         if (Long.class.isAssignableFrom(clazz) || long.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, 0L);
         }
         if (Float.class.isAssignableFrom(clazz) || float.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (float) 0);
         }
         if (Double.class.isAssignableFrom(clazz) || double.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (double) 0);
         }
         if (Byte.class.isAssignableFrom(clazz) || byte.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (byte) 0);
         }
         if (Short.class.isAssignableFrom(clazz) || short.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (short) 0);
         }
         if (Character.class.isAssignableFrom(clazz) || char.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (char) 0);
         }
         if (Boolean.class.isAssignableFrom(clazz) || boolean.class.isAssignableFrom(clazz)) {
             field.set(object, false);
@@ -217,22 +218,22 @@ public class InitClassAttr {
             return 0;
         }
         if (Long.class.isAssignableFrom(clazz) || long.class.isAssignableFrom(clazz)) {
-            return 0;
+            return 0L;
         }
         if (Float.class.isAssignableFrom(clazz) || float.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (float) 0;
         }
         if (Double.class.isAssignableFrom(clazz) || double.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (double) 0;
         }
         if (Byte.class.isAssignableFrom(clazz) || byte.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (byte) 0;
         }
         if (Short.class.isAssignableFrom(clazz) || short.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (short) 0;
         }
         if (Character.class.isAssignableFrom(clazz) || char.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (char) 0;
         }
         if (Boolean.class.isAssignableFrom(clazz) || boolean.class.isAssignableFrom(clazz)) {
             return false;

@@ -53,12 +53,12 @@ public class UrlFilter implements Filter {
 //            chain.doFilter(request, response);
 //
 //        }
-        System.out.println("user.dir:" + System.getProperty("user.dir"));
-        System.out.println("resource:" + Thread.currentThread().getContextClassLoader().getResource("").toString());
+        log.warn("user.dir:" + System.getProperty("user.dir"));
+        log.warn("resource:" + Thread.currentThread().getContextClassLoader().getResource("").toString());
         if (!aimEnable) {
             request.setAttribute("noNeedFilter", "false");
         }
-        System.out.println("请求路径：" + path);
+        log.warn("请求路径：" + path);
         String token = httpRequest.getParameter("token");
         log.info("Parameter获取token" + token);
         if (StringUtils.isNotBlank(token)) {
