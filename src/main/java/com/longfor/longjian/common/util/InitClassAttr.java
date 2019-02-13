@@ -16,7 +16,7 @@ public class InitClassAttr {
     private final static String LONGJIAN_PACKAGE = "com.longfor.longjian";
 
     public static void init(LjBaseResponse res) {
-        log.warn("需处理的返回结果：{}", JSON.toJSONString(res));
+        log.debug("需处理的返回结果：{}", JSON.toJSONString(res));
         if (Objects.isNull(res.getData())) {
             if (res.getDataClazz() == 1) {
                 res.setData(Maps.newHashMap());
