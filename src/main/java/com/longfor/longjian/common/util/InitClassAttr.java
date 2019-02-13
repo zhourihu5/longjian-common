@@ -16,6 +16,7 @@ public class InitClassAttr {
     private final static String LONGJIAN_PACKAGE = "com.longfor.longjian";
 
     public static void init(LjBaseResponse res) {
+        log.warn("需处理的返回结果：{}", JSON.toJSONString(res));
         if (Objects.isNull(res.getData())) {
             if (res.getDataClazz() == 1) {
                 res.setData(Maps.newHashMap());
@@ -131,7 +132,8 @@ public class InitClassAttr {
             Class clazzField = field.getType();
             try {
                 field.setAccessible(true);
-                if (Objects.isNull(field.get(object)) && isBaseType(clazzField)) {
+                if (isBaseType(clazzField)) {
+                    if (Objects.nonNull((field.get(object)))) continue;
                     initBaseType(field, clazzField, object);
                     continue;
                 }
@@ -183,22 +185,22 @@ public class InitClassAttr {
             field.set(object, 0);
         }
         if (Long.class.isAssignableFrom(clazz) || long.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, 0L);
         }
         if (Float.class.isAssignableFrom(clazz) || float.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (float) 0);
         }
         if (Double.class.isAssignableFrom(clazz) || double.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (double) 0);
         }
         if (Byte.class.isAssignableFrom(clazz) || byte.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (byte) 0);
         }
         if (Short.class.isAssignableFrom(clazz) || short.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (short) 0);
         }
         if (Character.class.isAssignableFrom(clazz) || char.class.isAssignableFrom(clazz)) {
-            field.set(object, 0);
+            field.set(object, (char) 0);
         }
         if (Boolean.class.isAssignableFrom(clazz) || boolean.class.isAssignableFrom(clazz)) {
             field.set(object, false);
@@ -216,22 +218,22 @@ public class InitClassAttr {
             return 0;
         }
         if (Long.class.isAssignableFrom(clazz) || long.class.isAssignableFrom(clazz)) {
-            return 0;
+            return 0L;
         }
         if (Float.class.isAssignableFrom(clazz) || float.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (float) 0;
         }
         if (Double.class.isAssignableFrom(clazz) || double.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (double) 0;
         }
         if (Byte.class.isAssignableFrom(clazz) || byte.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (byte) 0;
         }
         if (Short.class.isAssignableFrom(clazz) || short.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (short) 0;
         }
         if (Character.class.isAssignableFrom(clazz) || char.class.isAssignableFrom(clazz)) {
-            return 0;
+            return (char) 0;
         }
         if (Boolean.class.isAssignableFrom(clazz) || boolean.class.isAssignableFrom(clazz)) {
             return false;
@@ -274,99 +276,4 @@ public class InitClassAttr {
         return Map.class.isAssignableFrom(clazz);
     }
 
-    private static void demo() {
-        InitTest test = new InitTest();
-        ListTest list = new ListTest();
-        ListTest list2 = new ListTest();
-        test.listTest = Lists.newArrayList(list, list2);
-        MapTest map = new MapTest();
-        MapTest map1 = new MapTest();
-        test.mapTest = Maps.newHashMap();
-        test.mapTest.put("map", map);
-        test.mapTest.put("map1", map1);
-//        test.baseList = Lists.newArrayList(1, null);
-        LjBaseResponse<InitTest> response = new LjBaseResponse<>(test);
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo1() {
-        LjBaseResponse<InitTest> response = new LjBaseResponse<>(null);
-        System.out.println(JSON.toJSONString(response.getData()));
-        response.setDataClazz(3);
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo2() {
-        LjBaseResponse<List> response = new LjBaseResponse<>(Lists.newArrayList(1, null, Lists.newArrayList(1, null), Maps.newHashMap()));
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo3() {
-        LjBaseResponse<Map> response = new LjBaseResponse<>();
-        Map map = Maps.newHashMap();
-        map.put("a", null);
-        map.put("b", 1);
-        response.setData(map);
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-    private static void demo4() {
-        LjBaseResponse<Map> response = new LjBaseResponse<>();
-        Enum hasPer = Test.DISALLOWED;
-        Map data = Maps.newHashMap();
-        data.put("has_per",hasPer);
-        data.put("enum",new InitTest());
-        response.setData(data);
-        System.out.println(JSON.toJSONString(response.getData()));
-        InitClassAttr.init(response);
-        System.out.println(JSON.toJSONString(response.getData()));
-    }
-
-//    public static void main(String[] args) throws IllegalAccessException {
-////        demo();
-////        demo1();
-////        demo2();
-////        demo3();
-//        demo4();
-//    }
-
-}
-
-@Data
-class InitTest {
-    Integer sex;
-    List<Integer> baseList;
-    List<ListTest> listTest;
-    Map<String, MapTest> mapTest;
-    Enum anEnum;
-}
-
-@Data
-class ListTest {
-    String name;
-}
-
-@Data
-class MapTest {
-    Integer age;
-}
-
-enum Test {
-    ALLOWED("校验通过",1),
-    DISALLOWED("校验失败",0);
-
-    private String name;
-    private Integer value;
-
-    Test(String name, Integer value) {
-        this.name = name;
-        this.value = value;
-    }
 }
