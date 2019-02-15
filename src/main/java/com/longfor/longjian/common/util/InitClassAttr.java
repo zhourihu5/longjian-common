@@ -127,6 +127,9 @@ public class InitClassAttr {
     }
 
     private static Object ljInit(Object object, Class clazz) {
+        if (Objects.isNull(object)) {
+            return new Object();
+        }
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             Class clazzField = field.getType();
@@ -157,7 +160,7 @@ public class InitClassAttr {
                     }
                     continue;
                 }
-                if (clazzField.getPackage().getName().startsWith(LONGJIAN_PACKAGE)) {
+                if (clazzField.getPackage().getName().startsWith(LONGJIAN_PACKAGE) && !field.getName().contains("$")) {
                     initAttr(field.get(object), field.getType());
                 }
             } catch (Exception e) {
