@@ -56,7 +56,7 @@ public class SessionInfo {
 
     public static String getTokenKey(String token, boolean isDecode) {
         if (isDecode) {
-            token = AESUtil.AESDecode(token);
+            token = AES_CBC.AESDecode(token);
         }
         return RedisKey.join(sessionPrefix, token);
     }
