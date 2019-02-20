@@ -68,10 +68,10 @@ public class AES_CBC {
         return null;
     }
 
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         String a = AESEncode("d75c3c6bab6d4d2ab69e1d0ae0ed60c3");
         System.out.println(a);
         String b = AESDecode(a);
         System.out.println(b);
-    }
+    }*/
 }
