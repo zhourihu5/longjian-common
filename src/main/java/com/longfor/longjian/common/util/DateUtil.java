@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 日期/时间戳转换工具类
@@ -177,6 +178,20 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         return calendar.getTime();
+    }
+    public static boolean isDelete(Date date){
+        if(date==null){
+            return false;
+        }
+        Date defaultDate=stringToDate("0001-01-01 00:00:00");
+        return !Objects.equals(date,defaultDate);
+    }
+
+    public static void main(String[] args) {
+        Date defaultDate=stringToDate("0001-01-01 00:00:00");
+
+        boolean isdelet=isDelete(defaultDate);
+        System.out.println(isdelet);
     }
 
 
