@@ -22,13 +22,13 @@ public class AES_CBC {
      * 加密用的Key 可以用26个字母和数字组成
      * 此处使用AES-128-CBC加密模式，key需要为16位。
      */
-    private static String encodeRules = "LONGJIANHAHAHAHA";
+//    private static String encodeRules = "LONGJIANHAHAHAHA";
     private static final String ivParameter = "1234567890ABCDEF";
     private static final String AES_MODAL = "AES/CBC/PKCS5Padding";
 
-//    private static String encodeRules;
+    private static String encodeRules;
 
-//    @Value("${key.pairs}")
+    @Value("${key.pairs}")
     public void setEncodeRules(String encodeRules) {
         AES_CBC.encodeRules = encodeRules;
     }
