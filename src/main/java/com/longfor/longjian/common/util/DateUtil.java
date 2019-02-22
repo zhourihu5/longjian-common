@@ -187,12 +187,12 @@ public class DateUtil {
         return !Objects.equals(date,defaultDate);
     }
 
-    public static void main(String[] args) {
-        Date defaultDate=stringToDate("0001-01-01 00:00:00");
-
-        boolean isdelet=isDelete(defaultDate);
-        System.out.println(isdelet);
-    }
+//    public static void main(String[] args) {
+//        Date defaultDate=stringToDate("0001-01-01 00:00:00");
+//
+//        boolean isdelet=isDelete(defaultDate);
+//        System.out.println(isdelet);
+//    }
 
 
 }
