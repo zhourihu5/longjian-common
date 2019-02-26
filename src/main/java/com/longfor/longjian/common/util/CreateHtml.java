@@ -17,7 +17,8 @@ public class CreateHtml {
         String res = null;
         try {
             // step2 获取模版路径
-            configuration.setDirectoryForTemplateLoading(new File(templatePath));
+//            configuration.setDirectoryForTemplateLoading(new File(templatePath));
+            configuration.setClassForTemplateLoading(CreateHtml.class, templatePath);
             // step4 加载模版文件
             Template template = configuration.getTemplate(ftl);
             // step5 生成数据
