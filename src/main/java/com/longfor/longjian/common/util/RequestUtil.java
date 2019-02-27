@@ -1,9 +1,16 @@
 package com.longfor.longjian.common.util;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,6 +19,7 @@ import java.util.Map;
  * @author zkm
  * @date 2019/1/2 14:12
  */
+@Slf4j
 public class RequestUtil {
 
     /**
@@ -76,5 +84,38 @@ public class RequestUtil {
             headers.put(headerName, request.getHeader(headerName));
         }
         return headers;
+    }
+
+    /**
+     * 获取request中的所有参数并UrlEncode编码
+     * 组装成k=v&k=v&k=v的形式
+     *
+     * @param request
+     * @return
+     */
+    public static String encodeAllParams(HttpServletRequest request) {
+        Map<String, String[]> values = request.getParameterMap();
+        if (values == null || values.size() <= 0) {
+            return StringUtils.EMPTY;
+        }
+        List<String> keys = Lists.newArrayList(values.keySet());
+        Collections.sort(keys);
+        StringBuilder buf = new StringBuilder();
+        for (String k : keys) {
+            String[] vs = values.get(k);
+            try {
+                String prefix = URLEncoder.encode(k, "UTF-8") + "=";
+                for (String v : vs) {
+                    if (buf.length() > 0) {
+                        buf.append("&");
+                    }
+                    buf.append(prefix);
+                    buf.append(URLEncoder.encode(v, "UTF-8"));
+                }
+            } catch (UnsupportedEncodingException e) {
+                log.info("UrlEncode编码异常", e);
+            }
+        }
+        return buf.toString();
     }
 }
