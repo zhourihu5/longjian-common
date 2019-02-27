@@ -12,7 +12,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -38,7 +37,11 @@ public class SessionInfo {
 
         String token = getToken();
         if (StringUtils.isNotBlank(token)) {
-            val = redisUtil.getHash(SessionInfo.getTokenKey(token, Boolean.TRUE), key);
+            String tokenKey = SessionInfo.getTokenKey(token, Boolean.TRUE);
+            if (StringUtils.isBlank(tokenKey)) {
+                return null;
+            }
+            val = redisUtil.getHash(tokenKey, key);
         }
         return val;
     }
@@ -46,7 +49,11 @@ public class SessionInfo {
     public void setBaseInfo(String key, Object val) {
         String token = getToken();
         if (StringUtils.isNotBlank(token)) {
-            redisUtil.setHash(SessionInfo.getTokenKey(token, Boolean.TRUE), key, val);
+            String tokenKey = SessionInfo.getTokenKey(token, Boolean.TRUE);
+            if (StringUtils.isBlank(tokenKey)) {
+                return;
+            }
+            redisUtil.setHash(tokenKey, key, val);
         }
     }
 
@@ -57,6 +64,9 @@ public class SessionInfo {
     public static String getTokenKey(String token, boolean isDecode) {
         if (isDecode) {
             token = AES_CBC.AESDecode(token);
+            if (StringUtils.isBlank(token)) {
+                return null;
+            }
         }
         return RedisKey.join(sessionPrefix, token);
     }
