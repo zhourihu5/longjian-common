@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 public enum NoticeType {
 
-    WORK_REMINDER (1, "工作提醒"), SYSTEM_NOTIFICATION(2, "系统通知");
+    WORK_REMINDER (1, "工作提醒"), SYSTEM_NOTIFICATION(2, "系统通知"),SYSTEM_NOTIFICATION_EX (3, "增强型系统通知");
 
     @Getter
     @Setter
