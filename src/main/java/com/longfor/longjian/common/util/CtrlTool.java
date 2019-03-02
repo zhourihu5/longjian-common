@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.longfor.longjian.common.FeignClient.IPermissionService;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.commonEntity.TeamActiveModulesCommon;
+import com.longfor.longjian.common.commonEntity.TeamConfig;
 import com.longfor.longjian.common.consts.LoginEnum;
 import com.longfor.longjian.common.consts.YesNoEnum;
-import com.longfor.longjian.common.entity.*;
-import com.longfor.longjian.common.commonEntity.TeamConfig;
+import com.longfor.longjian.common.entity.ProjectBase;
+import com.longfor.longjian.common.entity.TeamBase;
+import com.longfor.longjian.common.entity.TeamSettingBase;
+import com.longfor.longjian.common.entity.UserBase;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.req.feignClientReq.ProjectPermissionReq;
 import com.longfor.longjian.common.req.feignClientReq.TeamPermissionReq;
@@ -52,9 +55,8 @@ public class CtrlTool {
      *
      * @param request
      * @param perm
-     * @throws Exception
      */
-    public void projPerm(HttpServletRequest request, String perm) throws Exception {
+    public void projPerm(HttpServletRequest request, String perm) {
         if (sessionInfo.getBaseInfo("cur_proj") == null){
             throw new LjBaseRuntimeException(-9999,"当前项目不存在");
         }
@@ -89,9 +91,8 @@ public class CtrlTool {
      *
      * @param request
      * @param perms
-     * @throws Exception
      */
-    public void projPermMulti(HttpServletRequest request, String[] perms) throws Exception {
+    public void projPermMulti(HttpServletRequest request, String[] perms) {
         if (sessionInfo.getBaseInfo("cur_proj") == null){
             throw new LjBaseRuntimeException(-9999,"当前项目不存在");
         }
@@ -134,9 +135,8 @@ public class CtrlTool {
      *
      * @param request
      * @param perm
-     * @throws Exception
      */
-    public void teamPerm(HttpServletRequest request, String perm) throws Exception {
+    public void teamPerm(HttpServletRequest request, String perm) {
         if (sessionInfo.getBaseInfo("cur_team") == null){
             throw new LjBaseRuntimeException(-9999,"当前公司不存在");
         }
@@ -172,9 +172,8 @@ public class CtrlTool {
      *
      * @param request
      * @param perms
-     * @throws Exception
      */
-    public void teamPermMulti(HttpServletRequest request, String[] perms) throws Exception {
+    public void teamPermMulti(HttpServletRequest request, String[] perms) {
         if (sessionInfo.getBaseInfo("cur_team") == null){
             throw new LjBaseRuntimeException(-9999,"当前公司不存在");
         }
@@ -213,7 +212,7 @@ public class CtrlTool {
     }
 
 
-    public void projectRequired() throws Exception {
+    public void projectRequired() {
         HttpServletRequest request = RequestContextHolderUtil.getRequest();
         Object projectIdStr = request.getParameter("project_id");
         log.debug("Start to get ProjectId : " + projectIdStr);
@@ -287,7 +286,7 @@ public class CtrlTool {
         sessionInfo.setBaseInfo("modules",modulesStatus);
     }
 
-    public void teamRequired() throws Exception {
+    public void teamRequired() {
         HttpServletRequest request = RequestContextHolderUtil.getRequest();
         Object teamIdStr = request.getParameter("team_id");
         if (teamIdStr == null || StringUtils.isBlank(teamIdStr.toString())){
