@@ -128,4 +128,14 @@ public class RequestUtil {
     public static Integer getUserId(SessionInfo sessionInfo) {
         return (Integer) sessionInfo.getBaseInfo("userId");
     }
+
+    /**
+     * 从session中获取projectId
+     *
+     * @param sessionInfo
+     * @return
+     */
+    public static Integer getProjectId(SessionInfo sessionInfo) {
+        return (Integer) sessionInfo.getBaseInfo("projectId");
+    }
 }
