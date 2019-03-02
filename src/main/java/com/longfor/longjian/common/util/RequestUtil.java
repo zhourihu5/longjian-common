@@ -118,4 +118,14 @@ public class RequestUtil {
         }
         return buf.toString();
     }
+
+    /**
+     * 从session中获取userId
+     *
+     * @param sessionInfo
+     * @return
+     */
+    public static Integer getUserId(SessionInfo sessionInfo) {
+        return (Integer) sessionInfo.getBaseInfo("userId");
+    }
 }
