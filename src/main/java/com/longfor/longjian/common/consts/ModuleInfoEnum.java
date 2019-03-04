@@ -1,5 +1,6 @@
 package com.longfor.longjian.common.consts;
 
+import io.swagger.models.auth.In;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,13 @@ public enum ModuleInfoEnum {
     ModuleInfoEnum(Integer value, String label) {
         this.value = value;
         this.label = label;
+    }
+
+    public static String getLabel(Integer value) {
+        for (ModuleInfoEnum ele : values()) {
+            if(ele.getValue().equals(value)) return ele.getLabel();
+        }
+        return null;
     }
 }
 

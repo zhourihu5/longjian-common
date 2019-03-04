@@ -42,7 +42,7 @@ public class UmPushUtil {
             customizedcast.goCustomAfterOpen(custom);
             customizedcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
             //测试环境用testMode()  正式用setProductionMode()
-            customizedcast.setTestMode();
+            customizedcast.setProductionMode();
             customizedcast.setExtraField("task_id",taskId);
             flag=  client.send(customizedcast);
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class UmPushUtil {
             customizedcast.setAlert(alert);
             //测试环境用testMode()  正式用setProductionMode()
             //customizedcast.setProductionMode();
-            customizedcast.setTestMode();
+            customizedcast.setProductionMode();
             customizedcast.setCustomizedField("task_id",taskId);
             flag=client.send(customizedcast);
         } catch (Exception e) {
