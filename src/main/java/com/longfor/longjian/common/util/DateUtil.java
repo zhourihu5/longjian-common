@@ -29,7 +29,7 @@ public class DateUtil {
     private static final String MINUTE_FORMAT2 = "yyyyMMddHHmm";
     private static final String SECOND_FORMAT2 = "yyyyMMddHHmmss";
 
-    private static final String SEC_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
+    private static final String SEC_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     /**
      * String转Date
