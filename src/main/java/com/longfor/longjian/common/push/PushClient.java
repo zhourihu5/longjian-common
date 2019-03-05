@@ -1,5 +1,6 @@
 package com.longfor.longjian.common.push;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,25 +15,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
+@Slf4j
 public class PushClient {
 
 
     private Logger logger = LoggerFactory.getLogger(PushClient.class);
-	
-	// The user agent
-	protected final String USER_AGENT = "Mozilla/5.0";
 
-	// This object is used for sending the post request to Umeng
-	protected HttpClient client = new DefaultHttpClient();
-	
-	// The host
-	protected static final String host = "http://msg.umeng.com";
-	
-	// The post path
-	protected static final String postPath = "/api/send";
+    // The user agent
+    protected final String USER_AGENT = "Mozilla/5.0";
 
-	public boolean send(UmengNotification msg)  {
-		String timestamp = Integer.toString((int)(System.currentTimeMillis() / 1000));
+    // This object is used for sending the post request to Umeng
+    protected HttpClient client = new DefaultHttpClient();
+
+    // The host
+    protected static final String host = "http://msg.umeng.com";
+
+    // The post path
+    protected static final String postPath = "/api/send";
+
+    public boolean send(UmengNotification msg) {
+        String timestamp = Integer.toString((int) (System.currentTimeMillis() / 1000));
         try {
             msg.setPredefinedKeyValue("timestamp", timestamp);
         } catch (Exception e) {
@@ -40,7 +42,7 @@ public class PushClient {
         }
         String url = host + postPath;
         String postBody = msg.getPostBody();
-        logger.debug("postBody==="+postBody);
+        log.info("postBody===" + postBody);
         String sign = null;
         try {
             sign = DigestUtils.md5Hex(("POST" + url + postBody + msg.getAppMasterSecret()).getBytes("utf8"));
@@ -60,8 +62,8 @@ public class PushClient {
         }
         int status = response.getStatusLine().getStatusCode();
 
-        try(InputStreamReader in=new InputStreamReader(response.getEntity().getContent())){
-            try (BufferedReader rd= new BufferedReader(in)){
+        try (InputStreamReader in = new InputStreamReader(response.getEntity().getContent())) {
+            try (BufferedReader rd = new BufferedReader(in)) {
                 StringBuffer result = new StringBuffer();
                 String line = "";
                 while ((line = rd.readLine()) != null) {
@@ -72,10 +74,10 @@ public class PushClient {
             logger.error(e.getMessage());
         }
         if (status == 200) {
-            logger.debug("Notification sent successfully.");
+            log.info("Notification sent successfully.");
         } else {
-            logger.error("Failed to send the notification!");
-			return false;
+            log.info("Failed to send the notification!");
+            return false;
         }
         return true;
     }

@@ -21,6 +21,16 @@ public class DateUtil {
 
     private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    private static final String MONTH_FORMAT = "yyyyMM";
+    private static final String MONTH_FORMAT_NEW = "yyyy-MM";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String YEARS_FORMAT = "yyyy";
+    private static final String MINUTE_FORMAT = "yyyy-MM-dd HH:mm";
+    private static final String MINUTE_FORMAT2 = "yyyyMMddHHmm";
+    private static final String SECOND_FORMAT2 = "yyyyMMddHHmmss";
+
+    private static final String SEC_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+
     /**
      * String转Date
      * 使用默认时间格式 yyyy-MM-dd HH:mm:ss
@@ -185,6 +195,51 @@ public class DateUtil {
         }
         Date defaultDate=stringToDate("0001-01-01 00:00:00");
         return !Objects.equals(date,defaultDate);
+    }
+
+    public static String getNowFormtMinute2() {
+        return DateTime.now().toString(MINUTE_FORMAT2);
+    }
+
+    public static String getNowFormtMinute() {
+        return DateTime.now().toString(MINUTE_FORMAT);
+    }
+
+    public static String getNowFormtDay() {
+        return DateTime.now().toString(DATE_FORMAT);
+    }
+
+    public static String formatBySec(Date date) {
+        return DateTime.now().toString(STANDARD_FORMAT);
+    }
+
+    public static String formatBySec(int sec) {
+        return new DateTime(new Date(sec*1000L)).toString(STANDARD_FORMAT);
+    }
+
+    public static String formatBySecZone(Date date) {
+        if(date==null) {
+            return "0001-01-01T00:00:00Z";
+        }
+        return new DateTime(date).toString(SEC_ZONE_FORMAT);
+    }
+
+    public static String formatBySec2(Date date) {
+        return new DateTime(date).toString(SECOND_FORMAT2);
+    }
+
+
+
+    public static boolean datetimeZero(Date date) {
+        //315532800000L=dateFormat.parse("1980-01-01 08:00:00").getTime()
+        if(date==null||date.getTime()<=315532800000L) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean datetimeBefore(Date date,Date date2) {
+        return date.getTime()<date2.getTime();
     }
 
 
