@@ -1,6 +1,5 @@
 package com.longfor.longjian.common.consts;
 
-import io.swagger.models.auth.In;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,11 +15,11 @@ public enum ModuleInfoEnum {
     GXGL    (1003, "gxgl"),
     SCSL    (1004, "scsl"),
     XUNJIAN (1005, "xunjian"),
-    PLAN    (1006, "plan"),
-    FHYS    (1007, "fhys"),
-    RHYF    (1008, "rhyf"),
-    CJCY    (1009, "cjcy"),
-    GDKF    (1010, "gdkf");
+    PLAN    (1006, "plan");
+    //FHYS    (1007, "fhys"),
+    //RHYF    (1008, "rhyf"),
+    //CJCY    (1009, "cjcy"),
+    //GDKF    (1010, "gdkf");
 
 
     @Getter

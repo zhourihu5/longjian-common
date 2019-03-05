@@ -11,6 +11,11 @@ public class AndroidCustomizedcast extends AndroidNotification {
     	setPredefinedKeyValue("alias", alias);
     	setPredefinedKeyValue("alias_type", aliasType);
     }
+
+	public void setMi(String mipush,String miActivity) throws Exception {
+		setPredefinedKeyValue("mipush", mipush);
+		setPredefinedKeyValue("mi_activity", miActivity);
+	}
 			
 	public void setFileId(String fileId,String aliasType) throws Exception {
     	setPredefinedKeyValue("file_id", fileId);

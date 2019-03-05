@@ -15,11 +15,13 @@ public abstract class AndroidNotification extends UmengNotification {
 	// Keys can be set in the body level
 	protected static final HashSet<String> BODY_KEYS = new HashSet<String>(Arrays.asList(new String[]{
 			"ticker", "title", "text", "builder_id", "icon", "largeIcon", "img", "play_vibrate", "play_lights", "play_sound",
-			"sound", "after_open", "url", "activity", "custom"}));
+			"sound", "after_open", "url", "activity", "custom","mipush","mi_activity"}));
 
 	public enum DisplayType{
 		NOTIFICATION{public String getValue(){return "notification";}},///通知:消息送达到用户设备后，由友盟SDK接管处理并在通知栏上显示通知内容。
-		MESSAGE{public String getValue(){return "message";}};///消息:消息送达到用户设备后，消息内容透传给应用自身进行解析处理。
+		MESSAGE{public String getValue(){return "message";}},///消息:消息送达到用户设备后，消息内容透传给应用自身进行解析处理。
+		MIPUSH{public String getValue(){return "true";}},
+		MIACTIVITY{public String getValue(){return "cn.smartinspection.combine.ui.activity.PushClickActivity";}};
 		public abstract String getValue();
 	}
 	public enum AfterOpenAction{

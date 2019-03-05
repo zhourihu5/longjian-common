@@ -14,6 +14,9 @@ public class UmPushUtil {
 
     private static Logger logger = LoggerFactory.getLogger(UmPushUtil.class);
 
+    private static final String MIPUSH="true";
+    private static final String MIACTIVITY="cn.smartinspection.combine.ui.activity.PushClickActivity";
+
     private static PushClient client = new PushClient();
 
     /**
@@ -36,6 +39,7 @@ public class UmPushUtil {
         try {
             AndroidCustomizedcast customizedcast = new AndroidCustomizedcast(appkey,appMasterSecret);
             customizedcast.setAlias(alias, alias_type);
+            customizedcast.setMi(MIPUSH,MIACTIVITY);
             customizedcast.setTicker( ticker);
             customizedcast.setTitle(title);
             customizedcast.setText(text);
