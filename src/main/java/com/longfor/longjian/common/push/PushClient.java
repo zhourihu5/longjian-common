@@ -69,6 +69,7 @@ public class PushClient {
                 while ((line = rd.readLine()) != null) {
                     result.append(line);
                 }
+                log.info("Client返回:status={}, result={}", status, result);
             }
         } catch (IOException e) {
             logger.error(e.getMessage());
