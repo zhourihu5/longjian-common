@@ -86,28 +86,28 @@ public class UmPushUtil {
         return flag;
     }
 
-    public static void main(String args[]) {
-//
-//        String AndroidAppkey="5b504eb6a40fa35084000068";
-//        String AndroidAppMasterSecret="agygyb9svtewqdgpj4vrnx7tiv7mc2wz";
-        String alias = "user_id_longhu_20080";
-        String alias_type = "user_id";
-        //        String AndroidTicker="Android 啥阿萨 ";
-//        String AndroidTitle="项目填报提醒";
-//        String AndroidText="项目[杭州龙湖大江东B项目一期1组团] 今日状态填报提醒";
-//        String AndroidCustom="Android_message";
-//        String AndroidMessageId="358540";
-//       boolean Android_result= sendAndroidCustomizedcast(AndroidAppkey,AndroidAppMasterSecret,alias,alias_type,AndroidTicker,AndroidTitle,AndroidText,AndroidCustom,AndroidMessageId);
-//
-        String IOSAppkey = "5ba9d3bab465f5a845000335";
-        String IOSAppMasterSecret = "s8258p7gu0lza6rcv4wvup0tbibbmfsj";
-        String IOSAlert = "工序服务推送测试------" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        String IOSMessageId = "67665840";
-        boolean IOS_result = sendIOSCustomizedcast(IOSAppkey, IOSAppMasterSecret, alias, alias_type, IOSAlert, IOSMessageId);
-//
-//
-//       // logger.debug("Android_result==="+Android_result);
-        logger.debug("IOS_result==="+IOS_result);
-//
-    }
+//    public static void main(String args[]) {
+////
+////        String AndroidAppkey="5b504eb6a40fa35084000068";
+////        String AndroidAppMasterSecret="agygyb9svtewqdgpj4vrnx7tiv7mc2wz";
+//        String alias = "user_id_longhu_20080";
+//        String alias_type = "user_id";
+//        //        String AndroidTicker="Android 啥阿萨 ";
+////        String AndroidTitle="项目填报提醒";
+////        String AndroidText="项目[杭州龙湖大江东B项目一期1组团] 今日状态填报提醒";
+////        String AndroidCustom="Android_message";
+////        String AndroidMessageId="358540";
+////       boolean Android_result= sendAndroidCustomizedcast(AndroidAppkey,AndroidAppMasterSecret,alias,alias_type,AndroidTicker,AndroidTitle,AndroidText,AndroidCustom,AndroidMessageId);
+////
+//        String IOSAppkey = "5ba9d3bab465f5a845000335";
+//        String IOSAppMasterSecret = "s8258p7gu0lza6rcv4wvup0tbibbmfsj";
+//        String IOSAlert = "工序服务推送测试------" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+//        String IOSMessageId = "67665840";
+//        boolean IOS_result = sendIOSCustomizedcast(IOSAppkey, IOSAppMasterSecret, alias, alias_type, IOSAlert, IOSMessageId);
+////
+////
+////       // logger.debug("Android_result==="+Android_result);
+//        logger.debug("IOS_result==="+IOS_result);
+////
+//    }
 }
