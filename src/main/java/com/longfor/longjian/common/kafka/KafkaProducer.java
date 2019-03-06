@@ -1,8 +1,8 @@
 package com.longfor.longjian.common.kafka;
 
-import bsh.StringUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +17,7 @@ import java.util.Map;
  * @author zhouxingjia
  */
 @Component
+@Slf4j
 public class KafkaProducer {
 
     @Value("${kafka.kafka_prefix}")
@@ -27,6 +28,7 @@ public class KafkaProducer {
 
     @Autowired
     private KafkaTemplate kafkaTemplate;
+
 
     public void produce(String topic, Object data) {
         String eventType = StringUtils.EMPTY;
@@ -42,6 +44,9 @@ public class KafkaProducer {
         pushData.put("event_type", eventType);
         pushData.put("data", JSON.toJSONString(data));
         pushData.put("timestamp", System.currentTimeMillis());
+
+        log.info("kafka 推送消息 topic:  {}",topic);
+        log.info("kafka 推送消息 data:  {}",JSON.toJSONString(pushData));
         kafkaTemplate.send(topic, JSON.toJSONString(pushData));
     }
 
