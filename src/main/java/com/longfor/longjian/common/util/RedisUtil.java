@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import com.sun.istack.internal.NotNull;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -163,6 +164,19 @@ public class RedisUtil {
             }
             redisTemplate.expire(key, timeout, unit);
         }
+    }
+
+    public void setEx(Object key, Long timeout, TimeUnit unit) {
+        if (timeout != null) {
+            if (unit == null) {
+                unit = RedisUtil.unit;
+            }
+            redisTemplate.expire(key, timeout, unit);
+        }
+    }
+
+    public Long ttl(String key) {
+        return redisTemplate.getExpire(key);
     }
 
 }
