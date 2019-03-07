@@ -23,7 +23,8 @@ public class KafkaProducer {
     @Value("${kafka.kafka_prefix}")
     private String prefix;
 
-    private  String topic_prefix = String.format("%s-", StringUtils.isBlank(prefix) ? "" : prefix);
+//    private  String topic_prefix = String.format("%s-", StringUtils.isBlank(prefix) ? "" : prefix);
+    private  String topic_prefix = String.format("%s-", prefix);
     private  String event_queue_topic = String.format("%sevents",topic_prefix);
 
     @Autowired
@@ -42,7 +43,7 @@ public class KafkaProducer {
         }
         Map<String, Object> pushData = Maps.newHashMap();
         pushData.put("event_type", eventType);
-        pushData.put("data", JSON.toJSONString(data));
+        pushData.put("data", data);
         pushData.put("timestamp", System.currentTimeMillis());
 
         log.info("kafka 推送消息 topic:  {}",topic);
@@ -57,13 +58,16 @@ public class KafkaProducer {
             topic = topicAndEvent[0];
             eventType = topicAndEvent[1];
         }
+
+
         topic = String.format("%s-%s", event_queue_topic, topic);
         Map<String, Object> pushData = Maps.newHashMap();
         pushData.put("event_type", eventType);
-        pushData.put("data", JSON.toJSONString(data));
+        pushData.put("data", data);
         pushData.put("timestamp", System.currentTimeMillis());
 
-        log.info("kafka 解析events后 推送消息 topic:  {}",eventType);
+        log.info("kafka 解析events后 推送消息 topic_prefix:  {}",topic_prefix);
+        log.info("kafka 解析events后 推送消息 eventType:  {}",eventType);
         log.info("kafka 解析events后 推送消息 topic:  {}",topic);
         log.info("kafka 解析events后 推送消息 data:  {}",JSON.toJSONString(pushData));
         kafkaTemplate.send(topic, JSON.toJSONString(pushData));
