@@ -63,9 +63,9 @@ public class KafkaProducer {
         pushData.put("data", JSON.toJSONString(data));
         pushData.put("timestamp", System.currentTimeMillis());
 
-        log.info("kafka 推送消息 topic:  {}",eventType);
-        log.info("kafka 推送消息 topic:  {}",topic);
-        log.info("kafka 推送消息 data:  {}",JSON.toJSONString(pushData));
+        log.info("kafka 解析events后 推送消息 topic:  {}",eventType);
+        log.info("kafka 解析events后 推送消息 topic:  {}",topic);
+        log.info("kafka 解析events后 推送消息 data:  {}",JSON.toJSONString(pushData));
         kafkaTemplate.send(topic, JSON.toJSONString(pushData));
     }
 
