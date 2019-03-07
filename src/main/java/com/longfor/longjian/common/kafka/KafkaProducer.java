@@ -42,7 +42,7 @@ public class KafkaProducer {
         Map<String, Object> pushData = Maps.newHashMap();
         pushData.put("event_type", eventType);
         pushData.put("data", data);
-        pushData.put("timestamp", System.currentTimeMillis());
+        pushData.put("timestamp", System.currentTimeMillis() / 1000);
 
         log.info("kafka 推送消息 topic:  {}",topic);
         log.info("kafka 推送消息 data:  {}",JSON.toJSONString(pushData));
@@ -62,7 +62,7 @@ public class KafkaProducer {
         Map<String, Object> pushData = Maps.newHashMap();
         pushData.put("event_type", eventType);
         pushData.put("data", data);
-        pushData.put("timestamp", System.currentTimeMillis());
+        pushData.put("timestamp", System.currentTimeMillis() / 1000);
 
         log.info("kafka 解析events后 推送消息 topic_prefix:  {}",topic_prefix);
         log.info("kafka 解析events后 推送消息 eventType:  {}",eventType);
