@@ -20,10 +20,8 @@ import java.util.Map;
 @Slf4j
 public class KafkaProducer {
 
-    @Value("${kafka.kafka_prefix}")
-    private String prefix;
+    private String prefix = "32_lhone";
 
-//    private  String topic_prefix = String.format("%s-", StringUtils.isBlank(prefix) ? "" : prefix);
     private  String topic_prefix = String.format("%s-", prefix);
     private  String event_queue_topic = String.format("%sevents",topic_prefix);
 
