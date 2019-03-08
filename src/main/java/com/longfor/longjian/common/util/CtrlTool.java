@@ -69,12 +69,12 @@ public class CtrlTool {
         projectPermissionReq.setPer_title(perm);
 
         if (StringUtils.isNotBlank(perm)) {
-            Enum hasPer = YesNoEnum.No;
+            Enum hasPer = YesNoEnum.NO;
             try {
                 LjBaseResponse<Object> res = ipermissionService.projectPermission(projectPermissionReq);
                 log.warn("project permission result:" + JSON.toJSONString(res));
                 hasPer = YesNoEnum.valueOf(((Map<String, Object>) res.getData()).get("has_per").toString());
-                if (!YesNoEnum.Yes.equals(hasPer)) {
+                if (!YesNoEnum.YES.equals(hasPer)) {
                     String err = LoginEnum.NO_PERMISSION.getName() + "--" + perm;
                     log.warn(err);
                     throw new LjBaseRuntimeException(-9999,err);
@@ -104,7 +104,7 @@ public class CtrlTool {
         projectPermissionReq.setUser_id(user.getUserId());
 
         if (perms.length > 0) {
-            Enum hasPer = YesNoEnum.No;
+            Enum hasPer = YesNoEnum.NO;
             for (String perm : perms
             ) {
                 try {
@@ -112,7 +112,7 @@ public class CtrlTool {
                     LjBaseResponse<Object> res = ipermissionService.projectPermission(projectPermissionReq);
                     log.warn("project permission result:" + JSON.toJSONString(res));
                     hasPer = YesNoEnum.valueOf(((Map<String, Object>) res.getData()).get("has_per").toString());
-                    if (YesNoEnum.Yes.equals(hasPer)) {
+                    if (YesNoEnum.YES.equals(hasPer)) {
                         break;
                     }
                 } catch (Exception e) {
@@ -120,7 +120,7 @@ public class CtrlTool {
                     throw new LjBaseRuntimeException(-9999,e.getMessage());
                 }
             }
-            if (!YesNoEnum.Yes.equals(hasPer)) {
+            if (!YesNoEnum.YES.equals(hasPer)) {
                 String err = LoginEnum.NO_PERMISSION.getName() + "--" + String.join("或", perms);
                 log.warn(err);
                 throw new LjBaseRuntimeException(-9999,err);
@@ -149,12 +149,12 @@ public class CtrlTool {
         teamPermissionReq.setPer_title(perm);
 
         if (StringUtils.isNotBlank(perm)) {
-            Enum hasPer = YesNoEnum.No;
+            Enum hasPer = YesNoEnum.NO;
             try {
                 LjBaseResponse<Object> res = ipermissionService.teamPermission(teamPermissionReq);
                 log.warn("team permission result:" + JSON.toJSONString(res));
                 hasPer = YesNoEnum.valueOf(((Map<String, Object>) res.getData()).get("has_per").toString());
-                if (!YesNoEnum.Yes.equals(hasPer)) {
+                if (!YesNoEnum.YES.equals(hasPer)) {
                     String err = LoginEnum.NO_PERMISSION.getName() + "--" + perm;
                     log.warn(err);
                     throw new LjBaseRuntimeException(-9999,err);
@@ -185,7 +185,7 @@ public class CtrlTool {
         teamPermissionReq.setUser_id(user.getUserId());
 
         if (perms.length > 0) {
-            Enum hasPer = YesNoEnum.No;
+            Enum hasPer = YesNoEnum.NO;
             for (String perm : perms
             ) {
                 try {
@@ -193,7 +193,7 @@ public class CtrlTool {
                     LjBaseResponse<Object> res = ipermissionService.teamPermission(teamPermissionReq);
                     log.warn("team permission result:" + JSON.toJSONString(res));
                     hasPer = YesNoEnum.valueOf(((Map<String, Object>) res.getData()).get("has_per").toString());
-                    if (YesNoEnum.Yes.equals(hasPer)) {
+                    if (YesNoEnum.YES.equals(hasPer)) {
                         break;
                     }
                 } catch (Exception e) {
@@ -201,7 +201,7 @@ public class CtrlTool {
                     throw new LjBaseRuntimeException(-9999,e.getMessage());
                 }
             }
-            if (!YesNoEnum.Yes.equals(hasPer)) {
+            if (!YesNoEnum.YES.equals(hasPer)) {
                 String err = LoginEnum.NO_PERMISSION.getName() + "--" + String.join("或", perms);
                 log.warn(err);
                 throw new LjBaseRuntimeException(-9999,err);

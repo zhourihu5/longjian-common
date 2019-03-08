@@ -5,8 +5,8 @@ package com.longfor.longjian.common.consts;
  */
 public enum YesNoEnum {
 
-    Yes("可用",1),
-    No("禁用",2);
+    YES("可用",1),
+    NO("禁用",2);
 
     private String name;
     private Integer value;
