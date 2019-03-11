@@ -172,7 +172,7 @@ public class CommonAspect {
 //                return new LjBaseResponse<>(1, 1, e.getMessage());
 ////                throw e;
 //            }
-            return new LjBaseResponse<>(1, 1, null, e.getMessage());
+            return new LjBaseResponse<>(1, 1, null, StringUtils.isNotBlank(e.getMessage()) ? e.getMessage() : "服务器错误，请联系管理员");
 //            throw new CommonException("服务器错误，请联系管理员");
         }
     }
