@@ -13,7 +13,7 @@ import java.security.spec.X509EncodedKeySpec;
 public class RSAUtil {
 
     /** * RSA加密的方法 * @author bazhandao * @date 2018-12-27 * @return rsa加密后转换成的base64加密字符串 */
-    public static String encrypt(String password, String publicKeyStr) throws LjBaseRuntimeException {
+    public static String encrypt(String password, String publicKeyStr) {
         try {
             BASE64Decoder b64d = new BASE64Decoder();
             byte[] keyByte = b64d.decodeBuffer(publicKeyStr);
