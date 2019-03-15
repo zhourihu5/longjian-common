@@ -41,7 +41,7 @@ public class WaterMarkUtils {
             g.setColor(markContentColor); //根据图片的背景设置水印颜色
             g.setFont(font);              //设置字体
             //PIN
-            File pinFile=new File(WaterMarkUtils.class.getResource("/"+PIN).toURI());
+            File pinFile=new File(WaterMarkUtils.class.getResource("/"+PIN).getFile());
             if(pinFile.exists()) {
                 BufferedImage pinImg = ImageIO.read(pinFile);
                 g.drawImage(pinImg, posx - pinImg.getWidth(), posy - pinImg.getHeight(), pinImg.getWidth(), pinImg.getHeight(), null);
