@@ -2,6 +2,7 @@ package com.longfor.longjian.common.util;
 
 import com.sun.imageio.plugins.png.PNGImageWriter;
 import com.sun.imageio.plugins.png.PNGImageWriterSpi;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.imageio.ImageIO;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * @use 利用Java代码给图片加水印
  * @author yanglei
  */
+@Slf4j
 public class WaterMarkUtils {
 
     private static final String PIN="planview_pin.png";
@@ -34,6 +36,8 @@ public class WaterMarkUtils {
             Image srcImg = ImageIO.read(srcImgFile);//文件转化为图片
             int srcImgWidth = srcImg.getWidth(null);//获取图片的宽
             int srcImgHeight = srcImg.getHeight(null);//获取图片的高
+            log.info("读取图片原始宽:"+srcImgPath);
+            log.info("读取图片原始高:"+srcImgHeight);
             // 加水印
             BufferedImage bufImg =ImageIO.read(srcImgFile);
             Graphics2D g = bufImg.createGraphics();
@@ -63,6 +67,7 @@ public class WaterMarkUtils {
         } catch (Exception e) {
             e.printStackTrace();
             // TODO: handle exception
+            log.error("生成图片错误",e);
         }
     }
     public static int getWatermarkLength(String waterMarkContent, Graphics2D g) {
@@ -100,7 +105,7 @@ public class WaterMarkUtils {
             /** 压缩后的文件名 */
             //newImage = filePrex + smallIcon+  oldFile.getName().substring(filePrex.length());
             //PIN
-            File pinFile=new File(WaterMarkUtils.class.getResource("/"+PIN).toURI());
+            File pinFile=new File(WaterMarkUtils.class.getResource("/"+PIN).getFile());
             if(pinFile.exists()) {
                 BufferedImage pinImg = ImageIO.read(pinFile);
                 tag.getGraphics().drawImage(pinImg, left - pinImg.getWidth(), top - pinImg.getHeight(), pinImg.getWidth(), pinImg.getHeight(), null);
@@ -110,6 +115,7 @@ public class WaterMarkUtils {
             // outImgStream.close();
         }catch (Exception e){
             e.printStackTrace();
+            log.error("image error",e);
         }
     }
 
@@ -147,6 +153,7 @@ public class WaterMarkUtils {
             // outImgStream.close();
         }catch (Exception e){
             e.printStackTrace();
+            log.error("image error",e);
         }
     }
     public static Pair<Integer,Integer> getImageInfo(String filePath) throws IOException {
