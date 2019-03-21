@@ -36,7 +36,7 @@ public class WaterMarkUtils {
             Image srcImg = ImageIO.read(srcImgFile);//文件转化为图片
             int srcImgWidth = srcImg.getWidth(null);//获取图片的宽
             int srcImgHeight = srcImg.getHeight(null);//获取图片的高
-            log.info("读取图片原始宽:"+srcImgPath);
+            log.info("读取图片原始宽:"+srcImgWidth);
             log.info("读取图片原始高:"+srcImgHeight);
             // 加水印
             BufferedImage bufImg =ImageIO.read(srcImgFile);
@@ -45,11 +45,11 @@ public class WaterMarkUtils {
             g.setColor(markContentColor); //根据图片的背景设置水印颜色
             g.setFont(font);              //设置字体
             //PIN
-            File pinFile=new File(WaterMarkUtils.class.getResource("/"+PIN).getFile());
-            if(pinFile.exists()) {
-                BufferedImage pinImg = ImageIO.read(pinFile);
+            //if(pinFile.exists()) {
+                log.info("in draw pin file...........................");
+                BufferedImage pinImg = ImageIO.read(WaterMarkUtils.class.getResourceAsStream("/"+PIN));
                 g.drawImage(pinImg, posx - pinImg.getWidth(), posy - pinImg.getHeight(), pinImg.getWidth(), pinImg.getHeight(), null);
-            }
+           // }
             //设置水印的坐标
             //int x = srcImgWidth - 2*getWatermarkLength(waterMarkContent, g);
             //int y = srcImgHeight - 2*getWatermarkLength(waterMarkContent, g);
