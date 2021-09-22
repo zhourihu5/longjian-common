@@ -47,6 +47,8 @@ import java.util.Objects;
  * @author chi.zhang
  * @version v1.0
  * @create 2018/6/9 下午5:24
+ *
+ * 通过aop或者拦截器或者网关等处进行鉴权等统一操作
  **/
 @Aspect
 @Configuration
